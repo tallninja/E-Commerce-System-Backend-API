@@ -5,7 +5,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Order } from '../order';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -23,6 +25,9 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar', name: 'password' })
   password: string;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

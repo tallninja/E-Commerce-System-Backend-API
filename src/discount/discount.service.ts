@@ -1,16 +1,13 @@
 import { BadRequestException, NotFoundException } from '../exceptions';
 import { Discount } from './discount.entity';
 
-interface FindManyFilter {
+interface FindOptionsFilter {
+  id: string;
+  name: string;
   percent: number;
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
-
-interface FindOneFilter {
-  id: string;
-  name: string;
 }
 
 interface FindOptionsRelations {
@@ -19,19 +16,18 @@ interface FindOptionsRelations {
 
 export class DiscountService {
   find = async (
-    filter?: Partial<FindManyFilter>,
+    filter?: Partial<FindOptionsFilter>,
     relations?: FindOptionsRelations
   ) => {
     try {
-      if (filter) return await Discount.find({ where: filter, relations });
-      return await Discount.find();
+      return await Discount.find({ where: filter, relations });
     } catch (error) {
       throw error;
     }
   };
 
   findOne = async (
-    filter: Partial<FindOneFilter>,
+    filter: Partial<FindOptionsFilter>,
     relations?: FindOptionsRelations
   ) => {
     try {
@@ -58,7 +54,6 @@ export class DiscountService {
   update = async (id: string, data: Partial<Discount>) => {
     try {
       const discount = await this.findOne({ id });
-      if (!discount) return null;
       Object.assign(discount, data);
       return await discount.save();
     } catch (error) {
@@ -69,7 +64,7 @@ export class DiscountService {
   delete = async (id: string) => {
     try {
       const discount = await this.findOne({ id });
-      await discount?.remove();
+      await discount.remove();
     } catch (error) {
       throw error;
     }

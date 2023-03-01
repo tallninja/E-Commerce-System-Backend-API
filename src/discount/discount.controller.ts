@@ -8,7 +8,7 @@ export class DiscountController {
 
   createDiscount = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const discount = this.service.create(req.body as Discount);
+      const discount = this.service.create(req.body);
       return res.status(SC.CREATED).json(discount);
     } catch (error) {
       next(error);

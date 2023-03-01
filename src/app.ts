@@ -12,6 +12,8 @@ import { Product } from './product';
 import { ProductCategory } from './product_category';
 import { ProductInventory } from './product_inventory';
 import { Discount } from './discount';
+import { OrderItem } from './order_items';
+import { Order } from './order';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -21,7 +23,15 @@ const AppDataSource = new DataSource({
   password: 'password',
   database: 'ecommdb',
   synchronize: true,
-  entities: [User, Product, ProductCategory, ProductInventory, Discount],
+  entities: [
+    User,
+    Product,
+    ProductCategory,
+    ProductInventory,
+    Discount,
+    OrderItem,
+    Order,
+  ],
 });
 
 (async () => {
