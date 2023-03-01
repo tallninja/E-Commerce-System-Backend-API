@@ -1,10 +1,18 @@
-import { Request, Response, Router } from 'express';
-import { StatusCodes as SC } from 'http-status-codes';
+import { Router } from 'express';
+import {
+  createUser,
+  deleteUser,
+  editUser,
+  getUser,
+  getUsers,
+} from './user.controllers';
 
 const router = Router();
 
-router.get('/', (req: Request, res: Response) => {
-  return res.status(SC.OK).json([]);
-});
+router.get('/', getUsers);
+router.post('/', createUser);
+router.get('/:id', getUser);
+router.patch('/:id', editUser);
+router.delete('/:id', deleteUser);
 
 export { router as userRoutes };

@@ -6,3 +6,28 @@ GET {{BASE_URL}}
 
 ###
 GET {{API_URL}}/users
+
+###
+POST {{API_URL}}/users
+Content-Type: application/json
+
+{
+    "firstName": "Ernest",
+    "lastName": "Wambua",
+    "email": "ernestwambua3@gmail.com",
+    "password": "password123"
+}
+
+###
+GET {{API_URL}}/users/da7ce1ca-2c3a-4c20-9401-9d45375f46a6
+
+###
+PATCH {{API_URL}}/users/da7ce1ca-2c3a-4c20-9401-9d45375f46a6
+Content-Type: application/json
+
+{
+    "firstName": "Meshack"
+}
+
+###
+DELETE {{API_URL}}/users/da7ce1ca-2c3a-4c20-9401-9d45375f46a6

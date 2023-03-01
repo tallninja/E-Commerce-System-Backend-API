@@ -16,6 +16,7 @@ const AppDataSource = new DataSource({
   password: 'password',
   database: 'ecommdb',
   synchronize: true,
+  entities: [User],
 });
 
 (async () => {
