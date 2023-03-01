@@ -68,7 +68,7 @@ export const deleteProduct = async (
   try {
     const product = await Product.findOne({ where: { id: req.params.id } });
     if (!product) throw new NotFoundException('Product Not Found');
-    await Product.delete({ id: req.params.id });
+    await product.softRemove();
     return res.status(SC.OK).json({ info: 'Product deleted successfully' });
   } catch (error) {
     return next(error);

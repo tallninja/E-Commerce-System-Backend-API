@@ -98,7 +98,7 @@ export const deleteProductCategory = async (
       where: { id: req.params.id },
     });
     if (!category) throw new NotFoundException('Category Not Found');
-    await ProductCategory.delete({ id: category.id });
+    await category.softRemove();
     return res.status(SC.OK).json({ info: 'Category Deleted Successfully' });
   } catch (error) {
     next(error);
