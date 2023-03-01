@@ -5,20 +5,28 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
 import { Product } from '../product';
 
-@Entity('product_inventory')
-export class ProductInventory extends BaseEntity {
+@Entity('product_discounts')
+export class Discount extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'quantity', type: 'int', default: 0 })
-  qty: number;
+  @Column({ type: 'varchar', unique: true })
+  name: string;
 
-  @OneToMany(() => Product, (product) => product.inventory)
+  @Column({ name: 'description', type: 'varchar' })
+  desc: string;
+
+  @Column({ type: 'int' })
+  percent: number;
+
+  @Column({ type: 'boolean', default: false })
+  active: boolean;
+
+  @OneToMany(() => Product, (product) => product.discount)
   products: Product[];
 
   @CreateDateColumn({ name: 'created_at' })
@@ -26,7 +34,4 @@ export class ProductInventory extends BaseEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deletedAt' })
-  deletedAt: Date;
 }
