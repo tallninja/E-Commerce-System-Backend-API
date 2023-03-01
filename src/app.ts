@@ -8,6 +8,7 @@ import { StatusCodes as SC } from 'http-status-codes';
 import appRouter from './app.router';
 import { User } from './user';
 import { Product } from './products';
+import { errorHandler } from './middlewares';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -47,13 +48,16 @@ app.use(express.json());
 // parses urlencoded bodies
 app.use(express.urlencoded({ extended: true }));
 
+// app router
+app.use('/api/v1', appRouter);
+
+// error handling middleware
+app.use(errorHandler);
+
 // root route of the API
 app.get('/', (req: Request, res: Response) => {
   return res.status(SC.OK).json({ info: 'E-Commerce Backend API' });
 });
-
-// app router
-app.use('/api/v1', appRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
