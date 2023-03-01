@@ -5,8 +5,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
+  ManyToOne,
 } from 'typeorm';
+import { ProductCategory } from '../product_categories';
 
 @Entity('products')
 export class Product extends BaseEntity {
@@ -22,7 +23,9 @@ export class Product extends BaseEntity {
   @Column({ type: 'varchar', unique: true })
   sku: string;
 
-  @Column('varchar')
+  @ManyToOne(() => ProductCategory, (pc) => pc.products, {
+    onDelete: 'SET NULL',
+  })
   category: string;
 
   @Column('varchar')

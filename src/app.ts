@@ -9,6 +9,7 @@ import appRouter from './app.router';
 import { User } from './user';
 import { Product } from './products';
 import { errorHandler } from './middlewares';
+import { ProductCategory } from './product_categories';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -18,7 +19,7 @@ const AppDataSource = new DataSource({
   password: 'password',
   database: 'ecommdb',
   synchronize: true,
-  entities: [User, Product],
+  entities: [User, Product, ProductCategory],
 });
 
 (async () => {

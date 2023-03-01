@@ -9,21 +9,26 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  const { path, method, ip } = req;
   if (!err.status) {
     logger.error(err.message, {
+      method,
       status: SC.INTERNAL_SERVER_ERROR,
-      path: req.path,
+      path,
+      ip,
     });
     return res.status(SC.INTERNAL_SERVER_ERROR).json({
       error: { status: SC.INTERNAL_SERVER_ERROR, message: err.message },
     });
   }
   logger.error(err.message, {
+    method,
     status: err.status,
-    path: req.path,
+    path,
+    ip,
   });
   return res.status(err.status).json({
     error: { status: err.status, message: err.message },
-    path: req.path,
+    path,
   });
 };

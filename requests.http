@@ -61,3 +61,29 @@ Content-Type: application/json
 
 ###
 DELETE {{API_URL}}/products/1a738b17-2f28-493d-8423-9e35cf063ec5
+
+###
+GET {{API_URL}}/product-categories
+
+###
+POST {{API_URL}}/product-categories
+Content-Type: application/json
+
+{
+    "name": "accessories",
+    "desc": "general accessories"
+}
+
+###
+GET {{API_URL}}/product-categories/9d48e6a6-0bc5-42b1-972f-06f6e63ff833
+
+###
+PATCH {{API_URL}}/product-categories/9d48e6a6-0bc5-42b1-972f-06f6e63ff833
+Content-Type: application/json
+
+{
+    "desc": "general indoor/outdoor accessories"
+}
+
+###
+DELETE {{API_URL}}/product-categories/9d48e6a6-0bc5-42b1-972f-06f6e63ff833
