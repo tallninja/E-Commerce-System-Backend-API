@@ -7,6 +7,7 @@ import compression from 'compression';
 import { StatusCodes as SC } from 'http-status-codes';
 import appRouter from './app.router';
 import { User } from './user';
+import { Product } from './products';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -16,7 +17,7 @@ const AppDataSource = new DataSource({
   password: 'password',
   database: 'ecommdb',
   synchronize: true,
-  entities: [User],
+  entities: [User, Product],
 });
 
 (async () => {

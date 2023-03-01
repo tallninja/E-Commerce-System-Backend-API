@@ -10,23 +10,23 @@ import {
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
   @Column({ type: 'varchar', name: 'first_name' })
-  firstName!: string;
+  firstName: string;
 
   @Column({ type: 'varchar', name: 'last_name' })
-  lastName!: string;
+  lastName: string;
 
   @Column({ type: 'varchar', name: 'email', unique: true })
-  email!: string;
+  email: string;
 
   @Column({ type: 'varchar', name: 'password' })
-  password!: string;
+  password: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt!: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt!: Date;
+  updatedAt: Date;
 }

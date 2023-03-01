@@ -11,7 +11,7 @@ export const getUsers = async (req: Request, res: Response) => {
     console.error(error);
     return res
       .status(SC.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Could not fetch users' });
+      .json({ error: 'Failed to fetch users' });
   }
 };
 
@@ -24,7 +24,7 @@ export const getUser = async (req: Request, res: Response) => {
     console.error(error);
     return res
       .status(SC.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Could not fetch user' });
+      .json({ error: 'Failed to fetch user' });
   }
 };
 
@@ -43,7 +43,7 @@ export const createUser = async (req: Request, res: Response) => {
     console.error(error);
     return res
       .status(SC.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Could not fetch user' });
+      .json({ error: 'Failed to create user' });
   }
 };
 
@@ -59,7 +59,7 @@ export const editUser = async (req: Request, res: Response) => {
     console.error(error);
     return res
       .status(SC.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Could not fetch user' });
+      .json({ error: 'Failed to edit user' });
   }
 };
 
@@ -74,6 +74,6 @@ export const deleteUser = async (req: Request, res: Response) => {
     console.error(error);
     return res
       .status(SC.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Could not fetch user' });
+      .json({ error: 'Failed to delete user' });
   }
 };

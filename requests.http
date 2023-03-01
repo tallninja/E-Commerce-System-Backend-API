@@ -31,3 +31,33 @@ Content-Type: application/json
 
 ###
 DELETE {{API_URL}}/users/da7ce1ca-2c3a-4c20-9401-9d45375f46a6
+
+###
+GET {{API_URL}}/products
+
+###
+POST {{API_URL}}/products
+Content-Type: application/json
+
+{
+    "name": "yeezeys",
+    "desc": "black yeezeys",
+    "sku": "ABCD1234",
+    "category": "fashion",
+    "inventory": "aBNAMBDNSB",
+    "price": 2300.44
+}
+
+###
+GET {{API_URL}}/products/1a738b17-2f28-493d-8423-9e35cf063ec5
+
+###
+PATCH {{API_URL}}/products/1a738b17-2f28-493d-8423-9e35cf063ec5
+Content-Type: application/json
+
+{
+    "desc": "brown yeezeys"
+}
+
+###
+DELETE {{API_URL}}/products/1a738b17-2f28-493d-8423-9e35cf063ec5
