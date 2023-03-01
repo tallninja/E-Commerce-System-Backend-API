@@ -8,7 +8,7 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Product } from '../products';
+import { Product } from '../product';
 
 @Entity('product_categories')
 export class ProductCategory extends BaseEntity {

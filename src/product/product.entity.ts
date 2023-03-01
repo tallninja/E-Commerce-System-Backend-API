@@ -7,7 +7,8 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { ProductCategory } from '../product_categories';
+import { ProductCategory } from '../product_category';
+import { ProductInventory } from '../product_inventory';
 
 @Entity('products')
 export class Product extends BaseEntity {
@@ -26,10 +27,12 @@ export class Product extends BaseEntity {
   @ManyToOne(() => ProductCategory, (pc) => pc.products, {
     onDelete: 'SET NULL',
   })
-  category: string;
+  category: ProductCategory[];
 
-  @Column('varchar')
-  inventory: string;
+  @ManyToOne(() => ProductInventory, (pi) => pi.products, {
+    onDelete: 'SET NULL',
+  })
+  inventory: ProductInventory;
 
   @Column({ type: 'float', scale: 2 })
   price: number;

@@ -5,11 +5,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import { StatusCodes as SC } from 'http-status-codes';
-import appRouter from './app.router';
-import { User } from './user';
-import { Product } from './products';
+import appRouter from './app.routes';
 import { errorHandler } from './middlewares';
-import { ProductCategory } from './product_categories';
+import { User } from './user';
+import { Product } from './product';
+import { ProductCategory } from './product_category';
+import { ProductInventory } from './product_inventory';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -19,7 +20,7 @@ const AppDataSource = new DataSource({
   password: 'password',
   database: 'ecommdb',
   synchronize: true,
-  entities: [User, Product, ProductCategory],
+  entities: [User, Product, ProductCategory, ProductInventory],
 });
 
 (async () => {

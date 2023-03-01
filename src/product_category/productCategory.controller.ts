@@ -53,6 +53,23 @@ export const getProductCategory = async (
   }
 };
 
+export const getProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const category = await ProductCategory.findOne({
+      where: { id: req.params.id },
+      relations: { products: true },
+    });
+    if (!category) throw new NotFoundException('Category Not Found');
+    return res.status(SC.OK).json(category.products);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const editProductCategory = async (
   req: Request,
   res: Response,
