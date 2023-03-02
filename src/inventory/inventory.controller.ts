@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
-import { ProductInventory } from './productInventory.entity';
-import { NotFoundException } from '../exceptions';
-import { ProductInventoryService } from './productInventory.service';
+import { InventoryService } from './inventory.service';
 
-export class ProductInventoryController {
-  private readonly service = new ProductInventoryService();
+export class InventoryController {
+  private readonly service = new InventoryService();
 
   getInventories = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -18,7 +16,7 @@ export class ProductInventoryController {
 
   createInventory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const inventory = this.service.create(req.body as ProductInventory);
+      const inventory = this.service.create(req.body);
       return res.status(SC.CREATED).json(inventory);
     } catch (error) {
       next(error);

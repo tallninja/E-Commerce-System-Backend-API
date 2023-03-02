@@ -5,11 +5,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { ProductCategory } from '../product_category';
-import { ProductInventory } from '../product_inventory';
+import { Category } from '../category';
+import { Inventory } from '../inventory';
 import { Discount } from '../discount';
 
 @Entity('products')
@@ -29,15 +28,15 @@ export class Product extends BaseEntity {
   @Column({ type: 'varchar', unique: true })
   sku: string;
 
-  @ManyToOne(() => ProductCategory, (pc) => pc.products, {
+  @ManyToOne(() => Category, (category) => category.products, {
     onDelete: 'SET NULL',
   })
-  category: ProductCategory[];
+  category: Category[];
 
-  @ManyToOne(() => ProductInventory, (pi) => pi.products, {
+  @ManyToOne(() => Inventory, (inventory) => inventory.products, {
     onDelete: 'SET NULL',
   })
-  inventory: ProductInventory;
+  inventory: Inventory;
 
   @ManyToOne(() => Discount, (discount) => discount.products, {
     onDelete: 'SET NULL',

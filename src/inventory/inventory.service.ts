@@ -1,5 +1,5 @@
 import { NotFoundException } from '../exceptions';
-import { ProductInventory } from './productInventory.entity';
+import { Inventory } from './inventory.entity';
 
 interface FindOptionsFilters {
   id: string;
@@ -11,13 +11,13 @@ interface FindOptionsRelations {
   products: boolean;
 }
 
-export class ProductInventoryService {
+export class InventoryService {
   find = async (
     filters?: Partial<FindOptionsFilters>,
     relations?: Partial<FindOptionsRelations>
   ) => {
     try {
-      const inventories = await ProductInventory.find({
+      const inventories = await Inventory.find({
         where: filters,
         relations,
       });
@@ -32,7 +32,7 @@ export class ProductInventoryService {
     relations?: Partial<FindOptionsRelations>
   ) => {
     try {
-      const inventory = await ProductInventory.findOne({
+      const inventory = await Inventory.findOne({
         where: filters,
         relations,
       });
@@ -43,16 +43,16 @@ export class ProductInventoryService {
     }
   };
 
-  create = async (data: Partial<ProductInventory>) => {
+  create = async (data: Partial<Inventory>) => {
     try {
-      const inventory = ProductInventory.create(data);
+      const inventory = Inventory.create(data);
       return await inventory.save();
     } catch (error) {
       throw error;
     }
   };
 
-  update = async (id: string, data: Partial<ProductInventory>) => {
+  update = async (id: string, data: Partial<Inventory>) => {
     try {
       const inventory = await this.findOne({ id });
       Object.assign(inventory, data);

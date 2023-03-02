@@ -9,8 +9,8 @@ import appRouter from './app.routes';
 import { errorHandler } from './middlewares';
 import { User } from './user';
 import { Product } from './product';
-import { ProductCategory } from './product_category';
-import { ProductInventory } from './product_inventory';
+import { Category } from './category';
+import { Inventory } from './inventory';
 import { Discount } from './discount';
 import { OrderItem } from './order_items';
 import { Order } from './order';
@@ -23,15 +23,7 @@ const AppDataSource = new DataSource({
   password: 'password',
   database: 'ecommdb',
   synchronize: true,
-  entities: [
-    User,
-    Product,
-    ProductCategory,
-    ProductInventory,
-    Discount,
-    OrderItem,
-    Order,
-  ],
+  entities: [User, Product, Category, Inventory, Discount, OrderItem, Order],
 });
 
 (async () => {
