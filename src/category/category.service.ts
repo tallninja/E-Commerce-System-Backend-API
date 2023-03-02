@@ -1,3 +1,4 @@
+import { Service } from 'typedi';
 import { BadRequestException, NotFoundException } from '../exceptions';
 import { Category } from './category.entity';
 
@@ -13,6 +14,7 @@ interface FindOptionsRelations {
   products: boolean;
 }
 
+@Service()
 export class CategoryService {
   find = async (
     filters?: Partial<FindOptionsFilters>,

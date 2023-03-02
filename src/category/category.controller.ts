@@ -1,9 +1,11 @@
+import { Service } from 'typedi';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { CategoryService } from './category.service';
 
+@Service()
 export class CategoryController {
-  private readonly service = new CategoryService();
+  constructor(private service: CategoryService) {}
 
   createCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {

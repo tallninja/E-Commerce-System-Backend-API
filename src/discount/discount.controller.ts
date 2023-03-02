@@ -1,10 +1,11 @@
+import { Service } from 'typedi';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
-import { Discount } from './discount.entity';
 import { DiscountService } from './discount.service';
 
+@Service()
 export class DiscountController {
-  private service = new DiscountService();
+  constructor(private service: DiscountService) {}
 
   createDiscount = async (req: Request, res: Response, next: NextFunction) => {
     try {

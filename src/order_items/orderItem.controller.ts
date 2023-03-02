@@ -1,9 +1,11 @@
+import { Service } from 'typedi';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { OrderItemService } from './orderItem.service';
 
+@Service()
 export class OrderItemController {
-  private service = new OrderItemService();
+  constructor(private service: OrderItemService) {}
 
   createOrderItem = async (req: Request, res: Response, next: NextFunction) => {
     try {

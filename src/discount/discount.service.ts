@@ -1,3 +1,4 @@
+import { Service } from 'typedi';
 import { BadRequestException, NotFoundException } from '../exceptions';
 import { Discount } from './discount.entity';
 
@@ -14,6 +15,7 @@ interface FindOptionsRelations {
   products?: boolean;
 }
 
+@Service()
 export class DiscountService {
   find = async (
     filter?: Partial<FindOptionsFilter>,

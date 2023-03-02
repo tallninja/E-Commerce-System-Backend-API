@@ -1,3 +1,4 @@
+import { Service } from 'typedi';
 import slugify from 'slugify';
 import { BadRequestException, NotFoundException } from '../exceptions';
 import { Product } from './product.entity';
@@ -18,6 +19,7 @@ interface FindOptionsRelations {
   discount: boolean;
 }
 
+@Service()
 export class ProductService {
   find = async (
     filters?: Partial<FindOptionsFilters>,

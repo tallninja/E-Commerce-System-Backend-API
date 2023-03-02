@@ -1,9 +1,11 @@
+import { Service } from 'typedi';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { UserService } from './user.service';
 
+@Service()
 export class UserController {
-  private service = new UserService();
+  constructor(private service: UserService) {}
 
   getUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {

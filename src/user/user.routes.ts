@@ -1,8 +1,9 @@
+import { Container } from 'typedi';
 import { Router } from 'express';
 import { UserController } from './user.controllers';
 
 const router = Router();
-const userController = new UserController();
+const userController = Container.get(UserController);
 
 router.get('/', userController.getUsers);
 router.post('/', userController.createUser);

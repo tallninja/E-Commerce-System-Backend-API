@@ -1,9 +1,11 @@
+import { Service } from 'typedi';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { InventoryService } from './inventory.service';
 
+@Service()
 export class InventoryController {
-  private readonly service = new InventoryService();
+  constructor(private service: InventoryService) {}
 
   getInventories = async (req: Request, res: Response, next: NextFunction) => {
     try {

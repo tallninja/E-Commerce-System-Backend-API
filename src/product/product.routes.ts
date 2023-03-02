@@ -1,8 +1,9 @@
+import { Container } from 'typedi';
 import { Router } from 'express';
 import { ProductController } from './product.controller';
 
 const router = Router();
-const productController = new ProductController();
+const productController = Container.get(ProductController);
 
 router.get('/', productController.getProducts);
 router.post('/', productController.createProduct);

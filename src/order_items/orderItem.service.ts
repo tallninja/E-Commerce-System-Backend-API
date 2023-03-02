@@ -1,3 +1,4 @@
+import { Service } from 'typedi';
 import { NotFoundException } from '../exceptions';
 import { OrderItem } from './orderItems.entity';
 
@@ -12,6 +13,7 @@ interface FindOptionsRelations {
   order?: boolean;
 }
 
+@Service()
 export class OrderItemService {
   find = async (
     filters?: Partial<FindOptionsFilter>,

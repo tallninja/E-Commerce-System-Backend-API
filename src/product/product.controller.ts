@@ -1,9 +1,11 @@
+import { Service } from 'typedi';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { ProductService } from './product.service';
 
+@Service()
 export class ProductController {
-  private readonly service = new ProductService();
+  constructor(private service: ProductService) {}
 
   createProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {

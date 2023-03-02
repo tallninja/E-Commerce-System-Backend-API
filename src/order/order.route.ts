@@ -1,8 +1,9 @@
+import { Container } from 'typedi';
 import { Router } from 'express';
 import { OrderController } from './order.controller';
 
 const router = Router();
-const orderController = new OrderController();
+const orderController = Container.get(OrderController);
 
 router.get('/', orderController.getOrders);
 router.post('/', orderController.createOrder);
