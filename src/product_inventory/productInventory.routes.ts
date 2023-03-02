@@ -1,20 +1,14 @@
 import { Router } from 'express';
-import {
-  createInventory,
-  deleteInventory,
-  editInventory,
-  getInventories,
-  getInventory,
-  getProducts,
-} from './productInventory.controller';
+import { ProductInventoryController } from './productInventory.controller';
 
 const router = Router();
+const inventoryController = new ProductInventoryController();
 
-router.get('/', getInventories);
-router.post('/', createInventory);
-router.get('/:id', getInventory);
-router.get('/products/:id', getProducts);
-router.patch('/:id', editInventory);
-router.delete('/:id', deleteInventory);
+router.get('/', inventoryController.getInventories);
+router.post('/', inventoryController.createInventory);
+router.get('/products/:id', inventoryController.getProducts);
+router.get('/:id', inventoryController.getInventory);
+router.patch('/:id', inventoryController.editInventory);
+router.delete('/:id', inventoryController.deleteInventory);
 
 export { router as productInventoryRoutes };
