@@ -9,6 +9,7 @@ interface FindOptionsFilter {
 
 interface FindOptionsRelations {
   product?: boolean;
+  order?: boolean;
 }
 
 export class OrderItemService {

@@ -27,7 +27,7 @@ export class OrderItemController {
     try {
       const orderItem = await this.service.findOne(
         { id: req.params.id },
-        { product: true }
+        { product: true, order: true }
       );
       return res.status(SC.OK).json(orderItem);
     } catch (error) {

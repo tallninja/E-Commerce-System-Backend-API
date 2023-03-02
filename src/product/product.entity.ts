@@ -17,8 +17,11 @@ export class Product extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varchar')
+  @Column({ type: 'varchar', unique: true })
   name: string;
+
+  @Column({ type: 'varchar', unique: true })
+  slug: string;
 
   @Column({ type: 'text', nullable: true })
   desc: string;
@@ -49,9 +52,6 @@ export class Product extends BaseEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
 
   afterCreate = () => {
     if (this.inventory) {
