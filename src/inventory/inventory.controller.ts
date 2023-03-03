@@ -18,7 +18,7 @@ export class InventoryController {
 
   createInventory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const inventory = this.service.create(req.body);
+      const inventory = await this.service.create(req.body);
       return res.status(SC.CREATED).json(inventory);
     } catch (error) {
       next(error);

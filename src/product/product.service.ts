@@ -1,8 +1,9 @@
 import { Service } from 'typedi';
-import slugify from 'slugify';
+import { slugify } from '../utils';
 import { BadRequestException, NotFoundException } from '../exceptions';
 import { Product } from './product.entity';
 import { InventoryService } from '../inventory';
+import { CategoryService } from '../category';
 
 interface FindOptionsFilters {
   id: string;
@@ -22,7 +23,10 @@ interface FindOptionsRelations {
 
 @Service()
 export class ProductService {
-  constructor(private ivService: InventoryService) {}
+  constructor(
+    private ivService: InventoryService,
+    private categoryService: CategoryService
+  ) {}
 
   find = async (
     filters?: Partial<FindOptionsFilters>,
@@ -52,20 +56,26 @@ export class ProductService {
   create = async (data: Partial<Product>) => {
     try {
       const product = Product.create(data as Product);
-      const slug = slugify(product.name);
 
-      // check if the product is unique
+      // check if the product slug is unique
+      const slug = slugify(product.name);
       const existingProduct = await Product.findOne({ where: { slug } });
       if (existingProduct)
         throw new BadRequestException('Product Already Exists');
 
       // check if inventory exists
       const inventory = await this.ivService.findOne({
-        id: product.inventory.id,
+        id: product.inventory as unknown as string,
+      });
+
+      // check if category exists
+      const category = await this.categoryService.findOne({
+        id: product.category as unknown as string,
       });
 
       // save product
       product.inventory = inventory;
+      product.category = category;
       product.slug = slug;
       return await product.save();
     } catch (error) {

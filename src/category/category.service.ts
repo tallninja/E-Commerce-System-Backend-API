@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { BadRequestException, NotFoundException } from '../exceptions';
 import { Category } from './category.entity';
-import slugify from 'slugify';
+import { slugify } from '../utils';
 
 interface FindOptionsFilters {
   id: string;

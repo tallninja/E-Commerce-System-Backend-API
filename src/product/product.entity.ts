@@ -33,7 +33,7 @@ export class Product extends BaseEntity {
   @ManyToOne(() => Category, (category) => category.products, {
     onDelete: 'SET NULL',
   })
-  category: Category[];
+  category: Category;
 
   @ManyToOne(() => Inventory, (inventory) => inventory.products, {
     onDelete: 'SET NULL',
