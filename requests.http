@@ -14,15 +14,15 @@ Content-Type: application/json
 {
     "firstName": "Ernest",
     "lastName": "Wambua",
-    "email": "ernestwambua2@gmail.com",
+    "email": "ernestwambua4@gmail.com",
     "password": "password123"
 }
 
 ###
-GET {{API_URL}}/users/da7ce1ca-2c3a-4c20-9401-9d45375f46a6
+GET {{API_URL}}/users/5de82075-97e6-4f20-9b2d-1c60dbb207ab
 
 ###
-PATCH {{API_URL}}/users/da7ce1ca-2c3a-4c20-9401-9d45375f46a6
+PATCH {{API_URL}}/users/5de82075-97e6-4f20-9b2d-1c60dbb207ab
 Content-Type: application/json
 
 {
@@ -30,7 +30,27 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{API_URL}}/users/da7ce1ca-2c3a-4c20-9401-9d45375f46a6
+DELETE {{API_URL}}/users/5de82075-97e6-4f20-9b2d-1c60dbb207ab
+
+###
+GET {{API_URL}}/inventories
+
+###
+GET {{API_URL}}/inventories/278c59b3-d0f9-4eff-a837-f3ea2502c20b
+
+###
+DELETE {{API_URL}}/inventories/278c59b3-d0f9-4eff-a837-f3ea2502c20b
+
+###
+GET {{API_URL}}/categories
+
+###
+POST {{API_URL}}/categories
+Content-Type: application/json
+
+{
+    "name": "Accessories"
+}
 
 ###
 GET {{API_URL}}/products
@@ -40,27 +60,27 @@ POST {{API_URL}}/products
 Content-Type: application/json
 
 {
-    "name": "yeezeys",
-    "desc": "black yeezeys",
-    "sku": "ABCD1234",
-    "category": "fashion",
-    "inventory": "aBNAMBDNSB",
+    "name": "Mac lipstick 2",
+    "desc": "Mac red lipstick 2",
+    "sku": "ABCD1238",
+    "category": "4a50ef1c-bb92-422a-8eae-b5951082f04f",
+    "inventory": "0fafc7c9-5530-4875-a552-4c05dbd5bbd5",
     "price": 2300.44
 }
 
 ###
-GET {{API_URL}}/products/1a738b17-2f28-493d-8423-9e35cf063ec5
+GET {{API_URL}}/products/b6f239ef-36de-4630-9317-496c349e63ba
 
 ###
-PATCH {{API_URL}}/products/1a738b17-2f28-493d-8423-9e35cf063ec5
+PATCH {{API_URL}}/products/b6f239ef-36de-4630-9317-496c349e63ba
 Content-Type: application/json
 
 {
-    "desc": "brown yeezeys"
+    "name": "addidas slippers"
 }
 
 ###
-DELETE {{API_URL}}/products/1a738b17-2f28-493d-8423-9e35cf063ec5
+DELETE {{API_URL}}/products/5a08a836-8fa3-4909-b9ee-2f7642287512
 
 ###
 GET {{API_URL}}/product-categories

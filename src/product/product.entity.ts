@@ -6,6 +6,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  AfterInsert,
+  AfterRemove,
 } from 'typeorm';
 import { Category } from '../category';
 import { Inventory } from '../inventory';
@@ -52,17 +54,23 @@ export class Product extends BaseEntity {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  afterCreate = () => {
-    if (this.inventory) {
-      this.inventory.qty += 1;
-      this.inventory.save();
+  @AfterInsert()
+  increaseInventory = async () => {
+    const inventory = await Inventory.findOneBy({ id: this.inventory.id });
+    if (inventory) {
+      inventory.qty += 1;
+      inventory.save();
     }
   };
 
-  afterDelete = () => {
+  @AfterRemove()
+  decreaseInventory = async () => {
     if (this.inventory) {
-      this.inventory.qty -= 1;
-      this.inventory.save();
+      const inventory = await Inventory.findOneBy({ id: this.inventory.id });
+      if (inventory) {
+        inventory.qty -= 1;
+        inventory.save();
+      }
     }
   };
 }

@@ -30,6 +30,14 @@ const AppDataSource = new DataSource({
   try {
     await AppDataSource.initialize();
     console.log('Connected to database');
+    (async () => {
+      const ivs = await Inventory.find();
+      if (!ivs.length) {
+        const inventory = Inventory.create();
+        await inventory.save();
+        console.log('Created Inventory');
+      }
+    })();
   } catch (error) {
     console.error(error);
   }

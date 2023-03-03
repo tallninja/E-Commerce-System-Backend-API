@@ -1,6 +1,7 @@
 import { Service } from 'typedi';
 import { BadRequestException, NotFoundException } from '../exceptions';
 import { Category } from './category.entity';
+import slugify from 'slugify';
 
 interface FindOptionsFilters {
   id: string;
@@ -44,12 +45,15 @@ export class CategoryService {
   create = async (data: Partial<Category>) => {
     try {
       const category = Category.create(data as Category);
-      const existingCategory = await this.findOne({
-        name: category.name,
-        slug: category.slug,
+      const existingCategory = await Category.findOne({
+        where: {
+          name: category.name,
+          slug: category.slug,
+        },
       });
       if (existingCategory)
         throw new BadRequestException('Category Already Exists');
+      category.slug = slugify(category.name);
       return await category.save();
     } catch (error) {
       throw error;

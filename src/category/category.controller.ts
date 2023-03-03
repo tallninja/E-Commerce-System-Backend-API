@@ -9,7 +9,7 @@ export class CategoryController {
 
   createCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const category = this.service.create(req.body);
+      const category = await this.service.create(req.body);
       return res.status(SC.CREATED).json(category);
     } catch (error) {
       next(error);

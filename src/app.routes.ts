@@ -11,8 +11,8 @@ const router = Router();
 
 router.use('/users', userRoutes);
 router.use('/products', productRoutes);
-router.use('/product-categories', categoryRoutes);
-router.use('/product-inventories', inventoryRoutes);
+router.use('/categories', categoryRoutes);
+router.use('/inventories', inventoryRoutes);
 router.use('/discounts', discountRoutes);
 router.use('/order-items', orderItemsRoutes);
 router.use('/orders', orderRoutes);

@@ -19,7 +19,7 @@ export class ProductController {
   getProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const products = await this.service.find();
-      return res.status(SC.CREATED).json(products);
+      return res.status(SC.OK).json(products);
     } catch (error) {
       return next(error);
     }
