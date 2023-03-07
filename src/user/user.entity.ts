@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Order } from '../order';
+import { Address } from '../address';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -28,6 +29,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
+
+  @OneToMany(() => Address, (address) => address.user)
+  addresses: Address[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
