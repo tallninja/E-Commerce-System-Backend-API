@@ -18,25 +18,17 @@ export class ShoppingSessionService {
   findOneById: (_id: string) => Promise<ShoppingSession> = async (
     id: string
   ) => {
-    try {
-      const session = await this.repository.findOne({ id });
-      if (!session) throw new NotFoundException('Shopping Session Not Found');
-      return session;
-    } catch (error) {
-      throw error;
-    }
+    const session = await this.repository.findOne({ id });
+    if (!session) throw new NotFoundException('Shopping Session Not Found');
+    return session;
   };
 
   createSession: (_s: Partial<ShoppingSession>) => Promise<ShoppingSession> =
     async (_session: Partial<ShoppingSession>) => {
-      try {
-        if (!_session.user) throw new BadRequestException('User not found');
-        const user = await this.userService.findOne({ id: _session.user.id });
-        if (!user) throw new BadRequestException('User Not Found');
-        return await this.repository.save(_session as ShoppingSession);
-      } catch (error) {
-        throw error;
-      }
+      if (!_session.user) throw new BadRequestException('User not found');
+      const user = await this.userService.findOne({ id: _session.user.id });
+      if (!user) throw new BadRequestException('User Not Found');
+      return await this.repository.save(_session as ShoppingSession);
     };
 
   updateSession: (
