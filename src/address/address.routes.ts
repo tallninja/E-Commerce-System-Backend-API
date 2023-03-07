@@ -11,4 +11,4 @@ router.get('/:id', addressController.getAddress);
 router.patch('/:id', addressController.updateAddress);
 router.delete('/:id', addressController.deleteAddress);
 
-export default { addressRouter: router };
+export { router as addressRoutes };
