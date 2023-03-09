@@ -7,9 +7,11 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
+  OneToOne,
 } from 'typeorm';
 import { User } from '../user';
 import { OrderItem } from '../order_items';
+import { Payment } from '../payment';
 
 @Entity('orders')
 export class Order extends BaseEntity {
@@ -22,8 +24,8 @@ export class Order extends BaseEntity {
   @Column({ type: 'decimal' })
   total: number;
 
-  @Column()
-  payment: string;
+  @OneToOne(() => Payment, (payment) => payment.order)
+  payment: Payment;
 
   @OneToMany(() => OrderItem, (oi) => oi.order)
   items: OrderItem[];
