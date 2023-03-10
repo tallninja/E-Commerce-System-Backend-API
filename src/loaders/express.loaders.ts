@@ -5,6 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import appRoutes from '../app.routes';
 import { errorHandler } from '../middlewares';
+import { v4 as uuid4 } from 'uuid';
 
 export const expressLoaders = ({ app }: { app: Application }) => {
   // Setup CORS
@@ -30,6 +31,10 @@ export const expressLoaders = ({ app }: { app: Application }) => {
 
   // root route of the API
   app.get('/', (req: Request, res: Response) => {
+    const expires = new Date();
+    console.log(expires);
+    expires.setSeconds(0, expires.getSeconds() + 24 * 60 * 60 * 1000);
+    res.cookie('token', uuid4(), { expires, httpOnly: true });
     return res.status(SC.OK).json({ info: 'E-Commerce Backend API' });
   });
 };

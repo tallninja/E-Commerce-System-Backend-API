@@ -23,7 +23,7 @@ export class Cart extends BaseEntity {
   @OneToMany(() => CartItem, (item) => item.cart)
   items: CartItem[];
 
-  @Column({ name: 'column', type: 'decimal', scale: 2 })
+  @Column({ name: 'amount', type: 'decimal', scale: 2 })
   amt: number;
 
   @CreateDateColumn({ name: 'created_at' })

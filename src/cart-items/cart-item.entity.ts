@@ -22,7 +22,8 @@ export class CartItem extends BaseEntity {
   @JoinColumn()
   product: Product;
 
-  @ManyToOne(() => Cart, (cart) => cart.items)
+  // when a cart is deleted then all the cart items in the cart should also be deleted
+  @ManyToOne(() => Cart, (cart) => cart.items, { onDelete: 'CASCADE' })
   cart: Cart;
 
   @Column({ name: 'quantity' })

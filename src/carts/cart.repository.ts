@@ -1,6 +1,7 @@
 import { Service } from 'typedi';
 import { Cart } from './cart.entity';
 import { PgDataSource } from '../db';
+import { Repository } from 'typeorm';
 
 export interface FindOptionsWhere {
   id?: string;
@@ -18,7 +19,7 @@ export interface FindOptionsRelations {
 
 @Service()
 export class CartRepository {
-  private repository;
+  private repository: Repository<Cart>;
 
   constructor() {
     this.repository = PgDataSource.getRepository(Cart);
