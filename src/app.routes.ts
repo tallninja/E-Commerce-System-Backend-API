@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import { userRoutes } from './domains/user';
-import { productRoutes } from './domains/product';
-import { categoryRoutes } from './domains/category';
-import { inventoryRoutes } from './domains/inventory';
-import { discountRoutes } from './domains/discount';
-import { orderItemsRoutes } from './domains/order_items';
-import { orderRoutes } from './domains/order';
-import { addressRoutes } from './domains/address';
-import { shoppingSessionRoutes } from './domains/shopping-session';
-import { paymentRoutes } from './domains/payment';
-import { cartRoutes } from './domains/carts';
-import { cartItemRoutes } from './domains/cart-items/cart-item.routes';
+import { userRoutes } from '@domains/user';
+import { productRoutes } from '@domains/product';
+import { categoryRoutes } from '@domains/category';
+import { inventoryRoutes } from '@domains/inventory';
+import { discountRoutes } from '@domains/discount';
+import { orderItemsRoutes } from '@domains/order_items';
+import { orderRoutes } from '@domains/order';
+import { addressRoutes } from '@domains/address';
+import { shoppingSessionRoutes } from '@domains/shopping-session';
+import { paymentRoutes } from '@domains/payment';
+import { cartRoutes } from '@domains/carts';
+import { cartItemRoutes } from '@domains/cart-items/cart-item.routes';
 
 const router = Router();
 
