@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
-import { BadRequestException, NotFoundException } from '../exceptions';
-import { hashPassword } from '../utils';
+import { BadRequestException, NotFoundException } from '../../exceptions';
+import { hashPassword } from '../../utils';
 import { User } from './user.entity';
 
 interface FindOptionsFilters {

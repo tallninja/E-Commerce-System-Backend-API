@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { NotFoundException } from '../exceptions';
+import { NotFoundException } from '../../exceptions';
 import { OrderItem } from './orderItems.entity';
 
 interface FindOptionsFilter {

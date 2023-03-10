@@ -2,7 +2,7 @@ import { Service } from 'typedi';
 import { CartRepository } from './cart.repository';
 import { Cart } from './cart.entity';
 import { User, UserService } from '../user';
-import { NotFoundException } from '../exceptions';
+import { NotFoundException } from '../../exceptions';
 
 @Service()
 export class CartService {

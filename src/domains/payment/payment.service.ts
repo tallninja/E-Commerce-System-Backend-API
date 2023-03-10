@@ -7,7 +7,7 @@ import {
 } from './payment.repository';
 import { Order, OrderService } from '../order';
 import { Payment, PaymentStatus } from './payment.entity';
-import { BadRequestException, NotFoundException } from '../exceptions';
+import { BadRequestException, NotFoundException } from '../../exceptions';
 
 @Service()
 export class PaymentService {

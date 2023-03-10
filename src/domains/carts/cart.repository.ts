@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { Cart } from './cart.entity';
-import { PgDataSource } from '../db';
+import { PgDataSource } from '../../db';
 import { Repository } from 'typeorm';
 
 export interface FindOptionsWhere {

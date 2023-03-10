@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { Address } from './address.entity';
 import { UserService } from '../user/user.service';
-import { BadRequestException, NotFoundException } from '../exceptions';
+import { BadRequestException, NotFoundException } from '../../exceptions';
 import { User } from '../user';
 
 interface FindOptionsFilters {

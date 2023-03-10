@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
-import { slugify } from '../utils';
-import { BadRequestException, NotFoundException } from '../exceptions';
+import { slugify } from '../../utils';
+import { BadRequestException, NotFoundException } from '../../exceptions';
 import { Product } from './product.entity';
 import { InventoryService } from '../inventory';
 import { CategoryService } from '../category';

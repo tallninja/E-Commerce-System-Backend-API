@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { CartService } from './cart.service';
 import { NextFunction, Request, Response } from 'express';
-import { BadRequestException } from '../exceptions';
+import { BadRequestException } from '../../exceptions';
 
 @Service()
 export class CartController {

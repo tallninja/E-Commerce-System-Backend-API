@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { BadRequestException, NotFoundException } from '../exceptions';
+import { BadRequestException, NotFoundException } from '../../exceptions';
 import { ShoppingSession } from './shopping-session.entity';
 import { ShoppingSessionRepository } from './shopping-session.repository';
 import { UserService } from '../user';

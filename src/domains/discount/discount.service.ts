@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { BadRequestException, NotFoundException } from '../exceptions';
+import { BadRequestException, NotFoundException } from '../../exceptions';
 import { Discount } from './discount.entity';
 
 interface FindOptionsFilter {

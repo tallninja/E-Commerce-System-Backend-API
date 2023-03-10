@@ -1,8 +1,8 @@
 import { Service } from 'typedi';
 import { CartItemRepository } from './cart-item.repository';
 import { CartItem } from './cart-item.entity';
-import { Cart, CartService } from '../carts';
-import { NotFoundException } from '../exceptions';
+import { Cart, CartService } from '../../domains/carts';
+import { NotFoundException } from '../../exceptions';
 
 @Service()
 export class CartItemService {
