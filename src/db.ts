@@ -35,3 +35,20 @@ export const PgDataSource = new DataSource({
     CartItem,
   ],
 });
+
+export const initDb = async () => {
+  try {
+    await PgDataSource.initialize();
+    console.log('Connected to database');
+    (async () => {
+      const ivs = await Inventory.find();
+      if (!ivs.length) {
+        const inventory = Inventory.create();
+        await inventory.save();
+        console.log('Created Inventory');
+      }
+    })();
+  } catch (error) {
+    console.error(error);
+  }
+};

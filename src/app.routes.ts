@@ -10,6 +10,7 @@ import { addressRoutes } from './address';
 import { shoppingSessionRoutes } from './shopping-session';
 import { paymentRoutes } from './payment';
 import { cartRoutes } from './carts';
+import { cartItemRoutes } from './cart-items/cart-item.routes';
 
 const router = Router();
 
@@ -24,5 +25,6 @@ router.use('/addresses', addressRoutes);
 router.use('/shopping-session', shoppingSessionRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/carts', cartRoutes);
+router.use('/cart-items', cartItemRoutes);
 
 export default router;

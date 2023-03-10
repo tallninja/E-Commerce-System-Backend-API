@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import express, { Request, Response } from 'express';
-import { expressLoaders, initDb } from './loaders';
+import { expressLoaders } from './loaders';
+import { initDb } from './db';
 
 // initialize express app
 const app = express();
