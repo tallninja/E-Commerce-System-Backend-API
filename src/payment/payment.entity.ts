@@ -32,7 +32,12 @@ export class Payment extends BaseEntity {
   @Column({ name: 'payment_provider' })
   provider: string;
 
-  @Column({ name: 'status', type: 'enum', default: PaymentStatus.PENDING })
+  @Column({
+    name: 'status',
+    type: 'enum',
+    enum: PaymentStatus,
+    default: PaymentStatus.PENDING,
+  })
   status: PaymentStatus;
 
   @CreateDateColumn({ name: 'created_at' })
