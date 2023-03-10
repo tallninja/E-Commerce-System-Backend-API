@@ -17,6 +17,7 @@ import { Order } from './order';
 import { Address } from './address';
 import { ShoppingSession } from './shopping-session';
 import { Payment } from './payment';
+import { Cart } from './carts';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -37,6 +38,7 @@ const AppDataSource = new DataSource({
     Address,
     ShoppingSession,
     Payment,
+    Cart,
   ],
 });
 
