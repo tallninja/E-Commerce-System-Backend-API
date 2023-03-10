@@ -8,37 +8,39 @@ import { Address } from './address.entity';
 export class AddressController {
   constructor(private service: AddressService) {}
 
-  createAddress = async (req: Request, res: Response, next: NextFunction) => {
+  async getAddresses(req: Request, res: Response, next: NextFunction) {
     try {
-      const address: Address = await this.service.create(req.body);
+      const addresses: Address[] = await this.service.findAll();
+      return res.status(SC.OK).json(addresses);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async getAddress(req: Request, res: Response, next: NextFunction) {
+    try {
+      const address: Address = await this.service.findById(req.params.id);
+      return res.status(SC.OK).json(address);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async createAddress(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.query;
+      const address: Address = await this.service.create(
+        userId as string,
+        req.body
+      );
       res.setHeader('Location', `${req.path}/${address.id}`);
       return res.status(SC.CREATED).json(address);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  getAddresses = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const addresses: Address[] = await this.service.find();
-      return res.status(SC.OK).json(addresses);
-    } catch (error) {
-      return next(error);
-    }
-  };
-
-  getAddress = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const address: Address = await this.service.findOne({
-        id: req.params.id,
-      });
-      return res.status(SC.OK).json(address);
-    } catch (error) {
-      return next(error);
-    }
-  };
-
-  updateAddress = async (req: Request, res: Response, next: NextFunction) => {
+  async updateAddress(req: Request, res: Response, next: NextFunction) {
     try {
       const address: Address = await this.service.update(
         req.params.id,
@@ -48,14 +50,14 @@ export class AddressController {
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  deleteAddress = async (req: Request, res: Response, next: NextFunction) => {
+  async deleteAddress(req: Request, res: Response, next: NextFunction) {
     try {
-      await this.service.delete(req.params.id);
-      return res.status(SC.OK).json({ info: 'Address deleted successfully' });
+      const address = await this.service.delete(req.params.id);
+      return res.status(SC.OK).json(address);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 }
