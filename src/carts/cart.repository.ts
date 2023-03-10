@@ -1,5 +1,6 @@
 import { Service } from 'typedi';
 import { Cart } from './cart.entity';
+import { PgDataSource } from '../db';
 
 export interface FindOptionsWhere {
   id?: string;
@@ -20,7 +21,7 @@ export class CartRepository {
   private repository;
 
   constructor() {
-    this.repository = Cart.getRepository();
+    this.repository = PgDataSource.getRepository(Cart);
   }
 
   async findAll(): Promise<Cart[]> {
