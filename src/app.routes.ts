@@ -8,6 +8,7 @@ import { orderItemsRoutes } from './order_items';
 import { orderRoutes } from './order';
 import { addressRoutes } from './address';
 import { shoppingSessionRoutes } from './shopping-session';
+import { paymentRoutes } from './payment';
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use('/order-items', orderItemsRoutes);
 router.use('/orders', orderRoutes);
 router.use('/addresses', addressRoutes);
 router.use('/shopping-session', shoppingSessionRoutes);
+router.use('/payments', paymentRoutes);
 
 export default router;
