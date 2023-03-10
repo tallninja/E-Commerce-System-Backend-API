@@ -1,4 +1,4 @@
-import { couponGenerator } from '../coupon-generator.util';
+import { couponGenerator } from '../coupon-generator.utils';
 
 describe('tesing coupon generator', () => {
   test('coupon generation', () => {
