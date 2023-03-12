@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
-import { Service } from 'typedi';
 import { AddressService } from './address.service';
 import { Address } from './address.entity';
 
-@Service()
 export class AddressController {
   private service: AddressService = AddressService.getInstance();
 
