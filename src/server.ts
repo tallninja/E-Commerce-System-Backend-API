@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { expressLoaders } from './loaders';
 import { initDb } from './db';
 

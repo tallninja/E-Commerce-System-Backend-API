@@ -1,16 +1,19 @@
-import { Service } from 'typedi';
 import { Address } from './address.entity';
 import { UserService } from '../user/user.service';
 import { BadRequestException, NotFoundException } from '../../exceptions';
 import { User } from '../user';
 import { AddressRepository } from './address.repository';
 
-@Service()
 export class AddressService {
-  constructor(
-    private repository: AddressRepository,
-    private userService: UserService
-  ) {}
+  public static instance: AddressService;
+
+  private readonly repository: AddressRepository;
+  private readonly userService: UserService;
+
+  constructor() {
+    this.repository = AddressRepository.getInstance();
+    this.userService = new UserService();
+  }
 
   async findAll(): Promise<Address[]> {
     return this.repository.findAll();
@@ -37,5 +40,13 @@ export class AddressService {
   async delete(id: string) {
     const address = await this.findById(id);
     return this.repository.delete(address);
+  }
+
+  public static getInstance(): AddressService {
+    if (!AddressService.instance) {
+      AddressService.instance = new AddressService();
+    }
+
+    return AddressService.instance;
   }
 }

@@ -1,7 +1,7 @@
-import { Service } from 'typedi';
+import { Inject, Service } from 'typedi';
 import { Cart } from './cart.entity';
-import { PgDataSource } from '../../db';
-import { Repository } from 'typeorm';
+import { PG_DATA_SOURCE, PgDataSource } from '../../db';
+import { DataSource, Repository } from 'typeorm';
 
 export interface FindOptionsWhere {
   id?: string;
@@ -19,10 +19,14 @@ export interface FindOptionsRelations {
 
 @Service()
 export class CartRepository {
+  @Inject(PG_DATA_SOURCE)
+  private dataSource: DataSource;
+
   private repository: Repository<Cart>;
 
   constructor() {
-    this.repository = PgDataSource.getRepository(Cart);
+    console.log(this.dataSource);
+    this.repository = this.dataSource.getRepository(Cart);
   }
 
   async findAll(): Promise<Cart[]> {

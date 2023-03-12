@@ -6,7 +6,9 @@ import { Address } from './address.entity';
 
 @Service()
 export class AddressController {
-  constructor(private service: AddressService) {}
+  private service: AddressService = AddressService.getInstance();
+
+  constructor() {}
 
   async getAddresses(req: Request, res: Response, next: NextFunction) {
     try {

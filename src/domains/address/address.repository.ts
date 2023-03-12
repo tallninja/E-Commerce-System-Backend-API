@@ -1,7 +1,6 @@
-import { PgDataSource } from 'db';
-import { Service } from 'typedi';
+import { DbDataSource, PgDataSource } from 'db';
 import { Address } from './address.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 export interface FindOptionsWhere {
   id?: string;
@@ -18,12 +17,16 @@ export interface FindOptionsRelations {
   user?: boolean;
 }
 
-@Service()
 export class AddressRepository {
+  public static instance: AddressRepository;
+
+  private dataSource: DataSource;
+
   private repository: Repository<Address>;
 
   constructor() {
-    this.repository = PgDataSource.getRepository(Address);
+    this.dataSource = DbDataSource.getInstance();
+    this.repository = this.dataSource.getRepository(Address);
   }
 
   async findAll(): Promise<Address[]> {
@@ -59,5 +62,13 @@ export class AddressRepository {
 
   async delete(address: Address): Promise<Address> {
     return this.repository.remove(address);
+  }
+
+  // get an instance of address repository
+  public static getInstance(): AddressRepository {
+    if (!AddressRepository.instance) {
+      AddressRepository.instance = new AddressRepository();
+    }
+    return AddressRepository.instance;
   }
 }

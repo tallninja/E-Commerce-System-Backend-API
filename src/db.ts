@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Address } from './domains/address';
 import { CartItem } from './domains/cart-items';
@@ -11,6 +12,7 @@ import { Payment } from './domains/payment';
 import { Product } from './domains/product';
 import { ShoppingSession } from './domains/shopping-session';
 import { User } from './domains/user';
+import Container, { Token } from 'typedi';
 
 export const PgDataSource = new DataSource({
   type: 'postgres',
@@ -52,3 +54,15 @@ export const initDb = async () => {
     console.error(error);
   }
 };
+
+export class DbDataSource {
+  public static instance: DataSource;
+
+  public static getInstance(): DataSource {
+    if (!DbDataSource.instance) {
+      DbDataSource.instance = PgDataSource;
+    }
+
+    return DbDataSource.instance;
+  }
+}
