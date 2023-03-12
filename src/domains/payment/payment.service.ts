@@ -1,65 +1,43 @@
-import { Service } from 'typedi';
+import { NotFoundException } from '../../exceptions';
+import { Payment } from './payment.entity';
+import { PaymentRepository } from './payment.repository';
 
-import {
-  FindOptionsRelations,
-  FindOptionsWhere,
-  PaymentRepository,
-} from './payment.repository';
-import { Order, OrderService } from '../order';
-import { Payment, PaymentStatus } from './payment.entity';
-import { BadRequestException, NotFoundException } from '../../exceptions';
-
-@Service()
 export class PaymentService {
-  constructor(
-    private paymentRepository: PaymentRepository,
-    private orderService: OrderService
-  ) {}
+  public static instance: PaymentService;
 
-  findAll = async () => {
-    return await this.paymentRepository.findAll();
-  };
+  private readonly repository: PaymentRepository =
+    PaymentRepository.getInstance();
 
-  findById = async (id: string) => {
-    const payment = await this.paymentRepository.findById(id);
+  async findAll(): Promise<Payment[]> {
+    return this.repository.findAll();
+  }
+
+  async findOne(id: string): Promise<Payment> {
+    const payment = await this.repository.findById(id);
     if (!payment) throw new NotFoundException('Payment Not Found');
     return payment;
-  };
+  }
 
-  findOneByOrder = async (orderId: string) => {
-    // check if order exists
-    const order: Order = await this.orderService.findOne({ id: orderId });
-    if (!order) throw new NotFoundException('Order Not Found');
-    const payment: Payment | null = await this.paymentRepository.findOneBy(
-      { order: { id: orderId } },
-      { order: true }
-    );
-    if (!payment) throw new NotFoundException('Payment Not Found');
-    return payment;
-  };
+  async create(data: Partial<Payment>): Promise<Payment> {
+    return this.repository.save(data);
+  }
 
-  createPayment = async (payment: Payment) => {
-    const order: Order = await this.orderService.findOne({
-      id: payment.order.id,
-    });
-    if (!order) throw new NotFoundException('Order Not Found');
-    if (payment.amount < order.total)
-      throw new BadRequestException('Amount paid is insufficient');
-    if (payment.amount > order.total)
-      throw new BadRequestException('Amount paid is in excess');
-    payment.order = order;
-    payment.status = PaymentStatus.PAID;
-    return await this.paymentRepository.save(payment);
-  };
+  async update(id: string, data: Partial<Payment>): Promise<Payment> {
+    const payment = await this.findOne(id);
+    Object.assign(payment, data);
+    return this.repository.save(payment);
+  }
 
-  updatePayment = async (id: string, paymentData: Payment) => {
-    const payment = await this.findById(id);
-    Object.assign(payment, paymentData);
-    return await this.paymentRepository.update(payment);
-  };
+  async delete(id: string): Promise<Payment> {
+    const payment = await this.findOne(id);
+    return this.repository.delete(payment);
+  }
 
-  deletePayment = async (id: string) => {
-    const payment = await this.findById(id);
-    return this.paymentRepository.delete(payment);
-  };
+  public static getInstance(): PaymentService {
+    if (!PaymentService.instance) {
+      PaymentService.instance = new PaymentService();
+    }
+
+    return PaymentService.instance;
+  }
 }

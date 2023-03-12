@@ -7,13 +7,11 @@ import { AddressRepository } from './address.repository';
 export class AddressService {
   public static instance: AddressService;
 
-  private readonly repository: AddressRepository;
-  private readonly userService: UserService;
+  private readonly repository: AddressRepository =
+    AddressRepository.getInstance();
+  private readonly userService: UserService = UserService.getInstance();
 
-  constructor() {
-    this.repository = AddressRepository.getInstance();
-    this.userService = new UserService();
-  }
+  constructor() {}
 
   async findAll(): Promise<Address[]> {
     return this.repository.findAll();
@@ -26,7 +24,7 @@ export class AddressService {
   }
 
   async create(userId: string, address: Partial<Address>) {
-    const user: User = await this.userService.findOne({ id: userId });
+    const user: User = await this.userService.findById(userId);
     address.user = user;
     return this.repository.save(address);
   }

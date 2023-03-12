@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\" \"nodemon dist/server.js\")",
+    "start:dev": "npx nodemon",
     "build": "tsc && tsc-alias",
     "start": "node app.ts",
     "test": "jest",
@@ -25,7 +25,6 @@
     "pg": "^8.9.0",
     "reflect-metadata": "^0.1.13",
     "slugify": "^1.6.5",
-    "typedi": "^0.10.0",
     "typeorm": "^0.3.12",
     "uuid": "^9.0.0",
     "winston": "^3.8.2"

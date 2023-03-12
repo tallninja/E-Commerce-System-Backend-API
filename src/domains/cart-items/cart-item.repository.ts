@@ -1,7 +1,6 @@
-import { Service } from 'typedi';
+import { DbDataSource } from '../../data-source';
 import { CartItem } from './cart-item.entity';
-import { PgDataSource } from '../../db';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 export interface FindOptionsWhere {
   id?: string;
@@ -19,12 +18,14 @@ export interface FindOptionsRelations {
   cart?: boolean;
 }
 
-@Service()
 export class CartItemRepository {
-  private repository: Repository<CartItem>;
+  public static instance: CartItemRepository;
+
+  private readonly dataSource: DataSource = DbDataSource.getInstance();
+  private readonly repository: Repository<CartItem>;
 
   constructor() {
-    this.repository = PgDataSource.getRepository(CartItem);
+    this.repository = this.dataSource.getRepository(CartItem);
   }
 
   async findAll(): Promise<CartItem[]> {
@@ -60,5 +61,13 @@ export class CartItemRepository {
 
   async delete(cartItem: CartItem): Promise<CartItem> {
     return this.repository.remove(cartItem);
+  }
+
+  public static getInstance(): CartItemRepository {
+    if (!CartItemRepository.instance) {
+      CartItemRepository.instance = new CartItemRepository();
+    }
+
+    return CartItemRepository.instance;
   }
 }

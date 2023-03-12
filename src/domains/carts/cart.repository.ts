@@ -1,6 +1,5 @@
-import { Inject, Service } from 'typedi';
+import { DbDataSource } from '../../data-source';
 import { Cart } from './cart.entity';
-import { PG_DATA_SOURCE, PgDataSource } from '../../db';
 import { DataSource, Repository } from 'typeorm';
 
 export interface FindOptionsWhere {
@@ -17,17 +16,13 @@ export interface FindOptionsRelations {
   items?: boolean;
 }
 
-@Service()
 export class CartRepository {
-  @Inject(PG_DATA_SOURCE)
-  private dataSource: DataSource;
+  public static instance: CartRepository;
 
-  private repository: Repository<Cart>;
+  private dataSource: DataSource = DbDataSource.getInstance();
+  private repository: Repository<Cart> = this.dataSource.getRepository(Cart);
 
-  constructor() {
-    console.log(this.dataSource);
-    this.repository = this.dataSource.getRepository(Cart);
-  }
+  constructor() {}
 
   async findAll(): Promise<Cart[]> {
     return await this.repository.find();
@@ -59,5 +54,13 @@ export class CartRepository {
 
   async delete(cart: Cart): Promise<Cart> {
     return await this.repository.remove(cart);
+  }
+
+  public static getInstance(): CartRepository {
+    if (!CartRepository.instance) {
+      CartRepository.instance = new CartRepository();
+    }
+
+    return CartRepository.instance;
   }
 }

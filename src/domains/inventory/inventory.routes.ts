@@ -1,15 +1,13 @@
-import { Container } from 'typedi';
 import { Router } from 'express';
 import { InventoryController } from './inventory.controller';
 
 const router = Router();
-const inventoryController = Container.get(InventoryController);
+const inventoryController = new InventoryController();
 
 router.get('/', inventoryController.getInventories);
 router.post('/', inventoryController.createInventory);
-router.get('/products/:id', inventoryController.getProducts);
 router.get('/:id', inventoryController.getInventory);
-router.patch('/:id', inventoryController.editInventory);
+router.patch('/:id', inventoryController.updateInventory);
 router.delete('/:id', inventoryController.deleteInventory);
 
 export { router as inventoryRoutes };

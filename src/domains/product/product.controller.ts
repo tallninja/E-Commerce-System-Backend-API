@@ -1,55 +1,56 @@
-import { Service } from 'typedi';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { ProductService } from './product.service';
+import { Product } from './product.entity';
 
-@Service()
 export class ProductController {
-  constructor(private service: ProductService) {}
+  private service: ProductService = ProductService.getInstance();
 
-  createProduct = async (req: Request, res: Response, next: NextFunction) => {
+  async createProduct(req: Request, res: Response, next: NextFunction) {
     try {
-      const product = await this.service.create(req.body);
+      const product: Product = await this.service.create(req.body);
       return res.status(SC.CREATED).json(product);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  getProducts = async (req: Request, res: Response, next: NextFunction) => {
+  async getProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const products = await this.service.find();
+      const products: Product[] = await this.service.findAll();
       return res.status(SC.OK).json(products);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  getProduct = async (req: Request, res: Response, next: NextFunction) => {
+  async getProduct(req: Request, res: Response, next: NextFunction) {
     try {
-      const product = await this.service.findOne({ id: req.params.id });
+      const product: Product = await this.service.findOne(req.params.id);
       return res.status(SC.OK).json(product);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  editProduct = async (req: Request, res: Response, next: NextFunction) => {
+  async updateProduct(req: Request, res: Response, next: NextFunction) {
     try {
-      const product = await this.service.update(req.params.id, req.body);
-      Object.assign(product, req.body);
+      const updatedProduct: Product = await this.service.update(
+        req.params.id,
+        req.body
+      );
+      return res.status(SC.OK).json(updatedProduct);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async deleteProduct(req: Request, res: Response, next: NextFunction) {
+    try {
+      const product: Product = await this.service.delete(req.params.id);
       return res.status(SC.OK).json(product);
     } catch (error) {
       return next(error);
     }
-  };
-
-  deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const product = await this.service.delete(req.params.id);
-      return res.status(SC.OK).json({ info: 'Product deleted successfully' });
-    } catch (error) {
-      return next(error);
-    }
-  };
+  }
 }

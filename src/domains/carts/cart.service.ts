@@ -1,15 +1,13 @@
-import { Service } from 'typedi';
 import { CartRepository } from './cart.repository';
 import { Cart } from './cart.entity';
-import { User, UserService } from '../user';
+import { UserService } from '../user';
 import { NotFoundException } from '../../exceptions';
 
-@Service()
 export class CartService {
-  constructor(
-    private repository: CartRepository,
-    private userService: UserService
-  ) {}
+  public static instance: CartService;
+
+  private repository: CartRepository = CartRepository.getInstance();
+  private userService: UserService = UserService.getInstance();
 
   async findAll(): Promise<Cart[]> {
     return await this.repository.findAll();
@@ -22,7 +20,7 @@ export class CartService {
   }
 
   async create(userId: string, cart: Partial<Cart>): Promise<Cart> {
-    const user = await this.userService.findOne({ id: userId });
+    const user = await this.userService.findById(userId);
     cart.user = user;
     return await this.repository.save(cart);
   }
@@ -38,8 +36,11 @@ export class CartService {
     return await this.repository.delete(cart);
   }
 
-  async findUserCarts(userId: string): Promise<Cart[]> {
-    const user = await this.userService.findOne({ id: userId });
-    return await this.repository.findBy({ id: user.id });
+  public static getInstance(): CartService {
+    if (!CartService.instance) {
+      CartService.instance = new CartService();
+    }
+
+    return CartService.instance;
   }
 }

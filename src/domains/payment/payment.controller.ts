@@ -1,49 +1,56 @@
-import { Service } from 'typedi';
+import { Request, Response, NextFunction } from 'express';
+import { StatusCodes as SC } from 'http-status-codes';
 import { PaymentService } from './payment.service';
-import { NextFunction, Request, Response } from 'express';
 import { Payment } from './payment.entity';
 
-@Service()
 export class PaymentController {
-  constructor(private paymentService: PaymentService) {}
+  private service: PaymentService = PaymentService.getInstance();
 
-  getAllPayments = async (req: Request, res: Response, next: NextFunction) => {
+  async createPayment(req: Request, res: Response, next: NextFunction) {
     try {
-      return await this.paymentService.findAll();
+      const payment: Payment = await this.service.create(req.body);
+      return res.status(SC.CREATED).json(payment);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  getPayment = async (req: Request, res: Response, next: NextFunction) => {
+  async getPayments(req: Request, res: Response, next: NextFunction) {
     try {
-      return await this.paymentService.findById(req.params.id);
+      const payments: Payment[] = await this.service.findAll();
+      return res.status(SC.OK).json(payments);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  createPayment = async (req: Request, res: Response, next: NextFunction) => {
+  async getPayment(req: Request, res: Response, next: NextFunction) {
     try {
-      return await this.paymentService.createPayment(req.body as Payment);
+      const payment: Payment = await this.service.findOne(req.params.id);
+      return res.status(SC.OK).json(payment);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  updatePayment = async (req: Request, res: Response, next: NextFunction) => {
+  async updatePayment(req: Request, res: Response, next: NextFunction) {
     try {
-      return await this.paymentService.updatePayment(req.params.id, req.body);
+      const updatedPayment: Payment = await this.service.update(
+        req.params.id,
+        req.body
+      );
+      return res.status(SC.OK).json(updatedPayment);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  deletePayment = async (req: Request, res: Response, next: NextFunction) => {
+  async deletePayment(req: Request, res: Response, next: NextFunction) {
     try {
-      return await this.paymentService.deletePayment(req.params.id);
+      const payment: Payment = await this.service.delete(req.params.id);
+      return res.status(SC.OK).json(payment);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 }

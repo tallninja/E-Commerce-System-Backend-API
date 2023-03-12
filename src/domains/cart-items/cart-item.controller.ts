@@ -1,12 +1,10 @@
-import { Service } from 'typedi';
 import { CartItemService } from './cart-item.service';
 import { NextFunction, Request, Response } from 'express';
 import { CartItem } from './cart-item.entity';
 import { StatusCodes } from 'http-status-codes';
 
-@Service()
 export class CartItemController {
-  constructor(private service: CartItemService) {}
+  private service: CartItemService = CartItemService.getInstance();
 
   async getCartItems(req: Request, res: Response, next: NextFunction) {
     try {

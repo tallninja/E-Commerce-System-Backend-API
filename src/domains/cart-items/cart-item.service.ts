@@ -6,10 +6,12 @@ import { NotFoundException } from '../../exceptions';
 
 @Service()
 export class CartItemService {
-  constructor(
-    private repository: CartItemRepository,
-    private cartService: CartService
-  ) {}
+  public static instance: CartItemService;
+
+  private repository: CartItemRepository = CartItemRepository.getInstance();
+  private cartService: CartService = CartService.getInstance();
+
+  constructor() {}
 
   async findAll(): Promise<CartItem[]> {
     return this.repository.findAll();
@@ -36,5 +38,13 @@ export class CartItemService {
   async delete(id: string): Promise<CartItem> {
     const cartItem: CartItem = await this.findById(id);
     return this.repository.delete(cartItem);
+  }
+
+  public static getInstance(): CartItemService {
+    if (!CartItemService.instance) {
+      CartItemService.instance = new CartItemService();
+    }
+
+    return CartItemService.instance;
   }
 }

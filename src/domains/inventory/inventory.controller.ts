@@ -1,66 +1,56 @@
-import { Service } from 'typedi';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { InventoryService } from './inventory.service';
+import { Inventory } from './inventory.entity';
 
-@Service()
 export class InventoryController {
-  constructor(private service: InventoryService) {}
+  private service: InventoryService = InventoryService.getInstance();
 
-  getInventories = async (req: Request, res: Response, next: NextFunction) => {
+  async createInventory(req: Request, res: Response, next: NextFunction) {
     try {
-      const inventories = await this.service.find();
-      return res.status(SC.OK).json(inventories);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  createInventory = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const inventory = await this.service.create(req.body);
+      const inventory: Inventory = await this.service.create(req.body);
       return res.status(SC.CREATED).json(inventory);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  getInventory = async (req: Request, res: Response, next: NextFunction) => {
+  async getInventories(req: Request, res: Response, next: NextFunction) {
     try {
-      const inventory = await this.service.findOne({ id: req.params.id });
+      const inventories: Inventory[] = await this.service.findAll();
+      return res.status(SC.OK).json(inventories);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async getInventory(req: Request, res: Response, next: NextFunction) {
+    try {
+      const inventory: Inventory = await this.service.findOne(req.params.id);
       return res.status(SC.OK).json(inventory);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  getProducts = async (req: Request, res: Response, next: NextFunction) => {
+  async updateInventory(req: Request, res: Response, next: NextFunction) {
     try {
-      const inventory = await this.service.findOne(
-        { id: req.params.id },
-        { products: true }
+      const updatedInventory: Inventory = await this.service.update(
+        req.params.id,
+        req.body
       );
-      return res.status(SC.OK).json(inventory.products);
+      return res.status(SC.OK).json(updatedInventory);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  editInventory = async (req: Request, res: Response, next: NextFunction) => {
+  async deleteInventory(req: Request, res: Response, next: NextFunction) {
     try {
-      const inventory = await this.service.update(req.params.id, req.body);
+      const inventory: Inventory = await this.service.delete(req.params.id);
       return res.status(SC.OK).json(inventory);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
-
-  deleteInventory = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      await this.service.delete(req.params.id);
-      return res.status(SC.OK).json({ info: 'Inventory Deleted Successfully' });
-    } catch (error) {
-      next(error);
-    }
-  };
+  }
 }

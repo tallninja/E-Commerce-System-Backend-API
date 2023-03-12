@@ -1,66 +1,56 @@
-import { Service } from 'typedi';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { CategoryService } from './category.service';
+import { Category } from './category.entity';
 
-@Service()
 export class CategoryController {
-  constructor(private service: CategoryService) {}
+  private service: CategoryService = CategoryService.getInstance();
 
-  createCategory = async (req: Request, res: Response, next: NextFunction) => {
+  async createCategory(req: Request, res: Response, next: NextFunction) {
     try {
-      const category = await this.service.create(req.body);
+      const category: Category = await this.service.create(req.body);
       return res.status(SC.CREATED).json(category);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  getCategories = async (req: Request, res: Response, next: NextFunction) => {
+  async getCategories(req: Request, res: Response, next: NextFunction) {
     try {
-      const categories = await this.service.find();
+      const categories: Category[] = await this.service.findAll();
       return res.status(SC.OK).json(categories);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  getCategory = async (req: Request, res: Response, next: NextFunction) => {
+  async getCategory(req: Request, res: Response, next: NextFunction) {
     try {
-      const category = await this.service.findOne({ id: req.params.id });
+      const category: Category = await this.service.findById(req.params.id);
       return res.status(SC.OK).json(category);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  getProducts = async (req: Request, res: Response, next: NextFunction) => {
+  async updateCategory(req: Request, res: Response, next: NextFunction) {
     try {
-      const category = await this.service.findOne(
-        { id: req.params.id },
-        { products: true }
+      const category: Category = await this.service.update(
+        req.params.id,
+        req.body
       );
-      return res.status(SC.OK).json(category.products);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  editCategory = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const category = await this.service.update(req.params.id, req.body);
       return res.status(SC.OK).json(category);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  deleteCategory = async (req: Request, res: Response, next: NextFunction) => {
+  async deleteCategory(req: Request, res: Response, next: NextFunction) {
     try {
-      await this.service.delete(req.params.id);
-      return res.status(SC.OK).json({ info: 'Category Deleted Successfully' });
+      const category: Category = await this.service.delete(req.params.id);
+      return res.status(SC.OK).json(category);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 }

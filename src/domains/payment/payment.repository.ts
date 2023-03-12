@@ -1,66 +1,67 @@
-import { Service } from 'typedi';
+import { DbDataSource } from '../../data-source';
+import { DataSource, Repository } from 'typeorm';
 import { Payment, PaymentStatus } from './payment.entity';
 
 export interface FindOptionsWhere {
+  id?: string;
   order?: {
     id: string;
   };
-  provider?: string;
   status?: PaymentStatus;
   createdAt?: Date;
-  updatedAt?: Date;
 }
 
 export interface FindOptionsRelations {
   order?: boolean;
 }
 
-@Service()
 export class PaymentRepository {
-  findAll: () => Promise<Payment[]> = async () => {
-    return await Payment.find();
-  };
+  public static instance: PaymentRepository;
 
-  findBy: (
-    _w: FindOptionsWhere,
-    _r?: FindOptionsRelations
-  ) => Promise<Payment[]> = async (
+  private readonly dataSource: DataSource = DbDataSource.getInstance();
+  private readonly repository: Repository<Payment> =
+    this.dataSource.getRepository(Payment);
+
+  async findAll(): Promise<Payment[]> {
+    return this.repository.find();
+  }
+
+  async findBy(
     where: FindOptionsWhere,
     relations?: FindOptionsRelations
-  ) => {
-    return await Payment.find({ where, relations });
-  };
+  ): Promise<Payment[]> {
+    return this.repository.find({ where, relations });
+  }
 
-  findOneBy: (
-    _w: FindOptionsWhere,
-    _r?: FindOptionsRelations
-  ) => Promise<Payment | null> = async (
+  async findById(id: string): Promise<Payment | null> {
+    return this.repository.findOneBy({ id });
+  }
+
+  async findOneBy(
     where: FindOptionsWhere,
     relations?: FindOptionsRelations
-  ) => {
-    return await Payment.findOne({ where, relations });
-  };
+  ): Promise<Payment | null> {
+    return this.repository.findOne({ where, relations });
+  }
 
-  findById: (
-    _id: string,
-    _r?: FindOptionsRelations
-  ) => Promise<Payment | null> = async (
-    id: string,
-    relations?: FindOptionsRelations
-  ) => {
-    return await Payment.findOne({ where: { id }, relations });
-  };
+  async save(data: Partial<Payment>): Promise<Payment> {
+    const payment: Payment = this.repository.create(data);
+    return this.repository.save(payment);
+  }
 
-  save: (_p: Payment) => Promise<Payment> = async (_payment: Payment) => {
-    const payment = Payment.create(_payment);
-    return await payment.save();
-  };
+  async update(payment: Payment): Promise<Payment> {
+    return this.repository.save(payment);
+  }
 
-  update: (_p: Payment) => Promise<Payment> = async (_payment: Payment) => {
-    return await _payment.save();
-  };
+  async delete(payment: Payment): Promise<Payment> {
+    return this.repository.remove(payment);
+  }
 
-  delete: (_p: Payment) => Promise<Payment> = async (_payment: Payment) => {
-    return await _payment.remove();
-  };
+  public static getInstance(): PaymentRepository {
+    if (!PaymentRepository.instance) {
+      PaymentRepository.instance = new PaymentRepository();
+    }
+
+    return PaymentRepository.instance;
+  }
 }

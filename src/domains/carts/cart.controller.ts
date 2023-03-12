@@ -5,7 +5,9 @@ import { BadRequestException } from '../../exceptions';
 
 @Service()
 export class CartController {
-  constructor(private cartService: CartService) {}
+  private cartService: CartService = CartService.getInstance();
+
+  constructor() {}
 
   getAllCarts = async (req: Request, res: Response, next: NextFunction) => {
     try {

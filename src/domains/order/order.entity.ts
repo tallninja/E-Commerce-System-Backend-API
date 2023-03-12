@@ -10,7 +10,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { User } from '../user';
-import { OrderItem } from '../order_items';
+import { OrderItem } from '../order-items';
 import { Payment } from '../payment';
 
 @Entity('orders')

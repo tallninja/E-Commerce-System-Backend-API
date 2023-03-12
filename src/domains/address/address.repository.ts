@@ -1,4 +1,4 @@
-import { DbDataSource, PgDataSource } from 'db';
+import { PgDataSource } from '../../db';
 import { Address } from './address.entity';
 import { DataSource, Repository } from 'typeorm';
 
@@ -20,14 +20,9 @@ export interface FindOptionsRelations {
 export class AddressRepository {
   public static instance: AddressRepository;
 
-  private dataSource: DataSource;
-
-  private repository: Repository<Address>;
-
-  constructor() {
-    this.dataSource = DbDataSource.getInstance();
-    this.repository = this.dataSource.getRepository(Address);
-  }
+  private dataSource: DataSource = PgDataSource.getInstance().getDataSource();
+  private repository: Repository<Address> =
+    this.dataSource.getRepository(Address);
 
   async findAll(): Promise<Address[]> {
     return this.repository.find();

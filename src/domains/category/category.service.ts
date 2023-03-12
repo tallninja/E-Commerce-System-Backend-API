@@ -1,81 +1,45 @@
-import { Service } from 'typedi';
-import { BadRequestException, NotFoundException } from '../../exceptions';
+import { NotFoundException } from '../../exceptions';
 import { Category } from './category.entity';
 import { slugify } from '../../utils';
+import { CategoryRepository } from './category.repository';
 
-interface FindOptionsFilters {
-  id: string;
-  name: string;
-  slug: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface FindOptionsRelations {
-  products: boolean;
-}
-
-@Service()
 export class CategoryService {
-  find = async (
-    filters?: Partial<FindOptionsFilters>,
-    relations?: Partial<FindOptionsRelations>
-  ) => {
-    try {
-      const categories = await Category.find({ where: filters, relations });
-      return categories;
-    } catch (error) {
-      throw error;
-    }
-  };
+  public static instance: CategoryService;
 
-  findOne = async (
-    filters?: Partial<FindOptionsFilters>,
-    relations?: Partial<FindOptionsRelations>
-  ) => {
-    try {
-      const category = await Category.findOne({ where: filters, relations });
-      if (!category) throw new NotFoundException('Category Not Found');
-      return category;
-    } catch (error) {
-      throw error;
-    }
-  };
+  private readonly repository: CategoryRepository =
+    CategoryRepository.getInstance();
 
-  create = async (data: Partial<Category>) => {
-    try {
-      const category = Category.create(data as Category);
-      const existingCategory = await Category.findOne({
-        where: {
-          name: category.name,
-          slug: category.slug,
-        },
-      });
-      if (existingCategory)
-        throw new BadRequestException('Category Already Exists');
-      category.slug = slugify(category.name);
-      return await category.save();
-    } catch (error) {
-      throw error;
-    }
-  };
+  async findAll(): Promise<Category[]> {
+    return this.repository.findAll();
+  }
 
-  update = async (id: string, data: Partial<Category>) => {
-    try {
-      const category = await this.findOne({ id });
-      Object.assign(category, data);
-      return await category.save();
-    } catch (error) {
-      throw error;
-    }
-  };
+  async findById(id: string): Promise<Category> {
+    const category: Category | null = await this.repository.findById(id);
+    if (!category) throw new NotFoundException('Category Not Found');
+    return category;
+  }
 
-  delete = async (id: string) => {
-    try {
-      const category = await this.findOne({ id });
-      return await category.remove();
-    } catch (error) {
-      throw error;
+  async create(category: Partial<Category>): Promise<Category> {
+    category.slug = slugify(category.name as string);
+    return this.repository.save(category);
+  }
+
+  async update(id: string, data: Partial<Category>): Promise<Category> {
+    const category: Category = await this.findById(id);
+    Object.assign(category, data);
+    return this.repository.update(category);
+  }
+
+  async delete(id: string): Promise<Category> {
+    const category: Category = await this.findById(id);
+    return this.repository.delete(category);
+  }
+
+  public static getInstance(): CategoryService {
+    if (!CategoryService.instance) {
+      CategoryService.instance = new CategoryService();
     }
-  };
+
+    return CategoryService.instance;
+  }
 }

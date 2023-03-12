@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { Container } from 'typedi';
 import { CartItemController } from './cart-item.controller';
 
 const router = Router();
-const controller = Container.get(CartItemController);
+const controller = new CartItemController();
 
 router.get('/', controller.getCartItems);
 router.post('/', controller.createCartItem);

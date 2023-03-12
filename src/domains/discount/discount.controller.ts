@@ -1,95 +1,56 @@
-import { Service } from 'typedi';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { DiscountService } from './discount.service';
+import { Discount } from './discount.entity';
 
-@Service()
 export class DiscountController {
-  constructor(private service: DiscountService) {}
+  private service: DiscountService = DiscountService.getInstance();
 
-  createDiscount = async (req: Request, res: Response, next: NextFunction) => {
+  async createDiscount(req: Request, res: Response, next: NextFunction) {
     try {
-      const discount = this.service.create(req.body);
+      const discount: Discount = await this.service.create(req.body);
       return res.status(SC.CREATED).json(discount);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  getDiscounts = async (req: Request, res: Response, next: NextFunction) => {
+  async getDiscounts(req: Request, res: Response, next: NextFunction) {
     try {
-      const discounts = await this.service.find();
+      const discounts: Discount[] = await this.service.findAll();
       return res.status(SC.OK).json(discounts);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  getDiscount = async (req: Request, res: Response, next: NextFunction) => {
+  async getDiscount(req: Request, res: Response, next: NextFunction) {
     try {
-      const discount = await this.service.findOne({ id: req.params.id });
+      const discount: Discount = await this.service.findOne(req.params.id);
       return res.status(SC.OK).json(discount);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  getProducts = async (req: Request, res: Response, next: NextFunction) => {
+  async updateDiscount(req: Request, res: Response, next: NextFunction) {
     try {
-      const discount = await this.service.findOne(
-        { id: req.params.id },
-        { products: true }
-      );
-      return res.status(SC.OK).json(discount.products);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  getActiveDiscounts = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const discounts = await this.service.find({ active: true });
-      return res.status(SC.OK).json(discounts);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  getInactiveDiscounts = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const discounts = await this.service.find({ active: false });
-      return res.status(SC.OK).json(discounts);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  editDiscount = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const updatedDiscount = await this.service.update(
+      const updatedDiscount: Discount = await this.service.update(
         req.params.id,
         req.body
       );
       return res.status(SC.OK).json(updatedDiscount);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 
-  deleteDiscount = async (req: Request, res: Response, next: NextFunction) => {
+  async deleteDiscount(req: Request, res: Response, next: NextFunction) {
     try {
-      await this.service.delete(req.params.id);
-      return res.status(SC.OK).json({ info: 'Discount Removed Successfully' });
+      const discount: Discount = await this.service.delete(req.params.id);
+      return res.status(SC.OK).json(discount);
     } catch (error) {
-      next(error);
+      return next(error);
     }
-  };
+  }
 }

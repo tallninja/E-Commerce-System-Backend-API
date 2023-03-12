@@ -1,54 +1,56 @@
-import { Service } from 'typedi';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { StatusCodes as SC } from 'http-status-codes';
 import { UserService } from './user.service';
+import { User } from './user.entity';
 
-@Service()
 export class UserController {
-  constructor(private service: UserService) {}
+  private service: UserService = UserService.getInstance();
 
-  getUsers = async (req: Request, res: Response, next: NextFunction) => {
+  async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await this.service.find();
+      const user: User = await this.service.create(req.body);
+      return res.status(SC.CREATED).json(user);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async getUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const users: User[] = await this.service.findAll();
       return res.status(SC.OK).json(users);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  getUser = async (req: Request, res: Response, next: NextFunction) => {
+  async getUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = await this.service.findOne({ id: req.params.id });
+      const user: User = await this.service.findById(req.params.id);
       return res.status(SC.OK).json(user);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  createUser = async (req: Request, res: Response, next: NextFunction) => {
+  async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const newUser = await this.service.create(req.body);
-      return res.status(SC.OK).json(newUser);
-    } catch (error) {
-      return next(error);
-    }
-  };
-
-  editUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const updatedUser = await this.service.update(req.params.id, req.body);
+      const updatedUser: User = await this.service.update(
+        req.params.id,
+        req.body
+      );
       return res.status(SC.OK).json(updatedUser);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+  async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
-      await this.service.delete(req.params.id);
-      return res.status(SC.OK).json({ info: 'User deleted successfully' });
+      const user: User = await this.service.delete(req.params.id);
+      return res.status(SC.OK).json(user);
     } catch (error) {
       return next(error);
     }
-  };
+  }
 }

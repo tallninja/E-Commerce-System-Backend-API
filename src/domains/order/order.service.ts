@@ -1,69 +1,42 @@
-import { Service } from 'typedi';
 import { NotFoundException } from '../../exceptions';
 import { Order } from './order.entity';
+import { OrderRepository } from './order.repository';
 
-interface FindOptionsFilters {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface FindOptionsRelations {
-  user?: boolean;
-  order?: boolean;
-}
-
-@Service()
 export class OrderService {
-  find = async (
-    filters?: Partial<FindOptionsFilters>,
-    relations?: FindOptionsRelations
-  ) => {
-    try {
-      return await Order.find({ where: filters, relations });
-    } catch (error) {
-      throw error;
-    }
-  };
+  public static instance: OrderService;
 
-  findOne = async (
-    filters?: Partial<FindOptionsFilters>,
-    relations?: FindOptionsRelations
-  ) => {
-    try {
-      const order = await Order.findOne({ where: filters, relations });
-      if (!order) throw new NotFoundException('Order Not Found');
-      return order;
-    } catch (error) {
-      throw error;
-    }
-  };
+  private readonly repository: OrderRepository = OrderRepository.getInstance();
 
-  create = async (data: Partial<Order>) => {
-    try {
-      const order = Order.create(data);
-      return await order.save();
-    } catch (error) {
-      throw error;
-    }
-  };
+  async findAll(): Promise<Order[]> {
+    return this.repository.findAll();
+  }
 
-  update = async (id: string, data: Partial<Order>) => {
-    try {
-      const order = await this.findOne({ id });
-      Object.assign(order, data);
-      return await order.save();
-    } catch (error) {
-      throw error;
-    }
-  };
+  async findOne(id: string): Promise<Order> {
+    const order = await this.repository.findById(id);
+    if (!order) throw new NotFoundException('Order Not Found');
+    return order;
+  }
 
-  delete = async (id: string) => {
-    try {
-      const order = await this.findOne({ id });
-      return await order.remove();
-    } catch (error) {
-      throw error;
+  async create(data: Partial<Order>): Promise<Order> {
+    return this.repository.save(data);
+  }
+
+  async update(id: string, data: Partial<Order>): Promise<Order> {
+    const order = await this.findOne(id);
+    Object.assign(order, data);
+    return this.repository.save(order);
+  }
+
+  async delete(id: string): Promise<Order> {
+    const order = await this.findOne(id);
+    return this.repository.delete(order);
+  }
+
+  public static getInstance(): OrderService {
+    if (!OrderService.instance) {
+      OrderService.instance = new OrderService();
     }
-  };
+
+    return OrderService.instance;
+  }
 }

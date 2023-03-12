@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { Container } from 'typedi';
 import { AddressController } from './address.controller';
 
 const router = Router();
-const addressController = Container.get(AddressController);
+const addressController = new AddressController();
 
 router.get('/', addressController.getAddresses);
 router.post('/', addressController.createAddress);
