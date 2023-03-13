@@ -28,7 +28,10 @@ export class Product {
   @Column({ name: 'price', type: 'decimal', scale: 2, nullable: false })
   price: number;
 
-  @CreateDateColumn({ name: 'created_at', nullable: false })
+  @Column({ name: 'quantity', type: 'int', nullable: false, default: 0 })
+  qty: number;
+
+  @CreateDateColumn({ name: 'created_at', nullable: false, update: false })
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })

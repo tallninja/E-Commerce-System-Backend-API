@@ -11,10 +11,11 @@ POST {{BASE_URL}}/products
 Content-Type: application/json
 
 {
-    "name": "Test Product 3",
-    "desc": "Test PRoduct 3 description",
-    "sku": "TP3",
-    "price": 20.99
+    "name": "Test Product 4",
+    "desc": "Test PRoduct 4 description",
+    "sku": "TP4",
+    "price": 20.12,
+    "qty": 20
 }
 
 ### GET Product ###
