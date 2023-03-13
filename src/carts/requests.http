@@ -1,0 +1,17 @@
+@CARTS_URL=http://localhost:5000/api/v1/carts
+
+### GET Carts ###
+GET {{CARTS_URL}}
+
+### CREATE Cart ###
+POST {{CARTS_URL}}
+
+### GET Cart ###
+GET {{CARTS_URL}}/fe06afb2-4090-4aef-89a6-159a769dc7af
+
+### PUT Cart ###
+PUT {{CARTS_URL}}/fe06afb2-4090-4aef-89a6-159a769dc7af
+
+
+### DELETE Cart ###
+DELETE {{CARTS_URL}}/fe06afb2-4090-4aef-89a6-159a769dc7af
