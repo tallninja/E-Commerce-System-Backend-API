@@ -11,9 +11,9 @@ POST {{BASE_URL}}/products
 Content-Type: application/json
 
 {
-    "name": "Test Product 4",
-    "desc": "Test PRoduct 4 description",
-    "sku": "TP4",
+    "name": "Test Product 7",
+    "desc": "Test PRoduct 7 description",
+    "sku": "TP7",
     "price": 20.12,
     "qty": 20
 }

@@ -10,12 +10,13 @@ import {
   HttpStatus,
   ParseUUIDPipe,
   Put,
+  Req,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Serialize } from '../common';
 import { GetProductDto } from './dto/get-product.dto';
 
@@ -26,13 +27,14 @@ export class ProductsController {
 
   @Post()
   async create(
-    @Body() createProductDto: CreateProductDto,
+    @Req() req: Request,
     @Res() res: Response,
+    @Body() createProductDto: CreateProductDto,
   ) {
     const product: Product = await this.productsService.create(
       createProductDto,
     );
-    res.setHeader('Location', product.id);
+    res.setHeader('Location', `${req.path}/${product.id}`);
     return res.status(HttpStatus.CREATED).json(product);
   }
 

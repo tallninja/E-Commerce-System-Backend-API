@@ -1,8 +1,10 @@
+import { Category } from '../../categories/entities/category.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
@@ -30,6 +32,9 @@ export class Product {
 
   @Column({ name: 'quantity', type: 'int', nullable: false, default: 0 })
   qty: number;
+
+  @ManyToMany(() => Category, (category) => category.products)
+  categories: Category[];
 
   @CreateDateColumn({ name: 'created_at', nullable: false, update: false })
   createdAt: Date;
