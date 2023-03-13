@@ -31,3 +31,31 @@ Content-Type: application/json
 
 ### DELETE Product ###
 DELETE  {{BASE_URL}}/products/b60b4434-7c73-4905-bf4f-cc74dd8ffd13
+
+
+### GET Categories ###
+GET {{BASE_URL}}/categories
+
+### POST Category ###
+POST {{BASE_URL}}/categories
+Content-Type: application/json
+
+{
+    "name": "Category 1",
+    "desc": "Category 1 description"
+}
+
+### GET Category ###
+GET {{BASE_URL}}/categories/4d1c531e-5abf-4418-9c0d-c81ad7ebe72e
+
+
+### UPDATE Category ###
+PATCH {{BASE_URL}}/categories/4d1c531e-5abf-4418-9c0d-c81ad7ebe72e
+Content-Type: application/json
+
+{
+    "name": "Category 1 UPDATED"
+}
+
+### DELETE Category ###
+DELETE {{BASE_URL}}/categories/4d1c531e-5abf-4418-9c0d-c81ad7ebe72e

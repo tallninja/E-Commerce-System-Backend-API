@@ -9,22 +9,32 @@ import {
   ParseUUIDPipe,
   Res,
   Req,
+  HttpStatus,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { Response, Request } from 'express';
+import { Serialize } from '../common';
+import { GetCategoryDto } from './dto/get-category.dto';
 
 @Controller('categories')
+@Serialize(GetCategoryDto)
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
   async create(
+    @Req() req: Request,
+    @Res() res: Response,
     @Body() createCategoryDto: CreateCategoryDto,
-  ): Promise<Category> {
-    return this.categoriesService.create(createCategoryDto);
+  ) {
+    const category: Category = await this.categoriesService.create(
+      createCategoryDto,
+    );
+    res.setHeader('Location', `${req.path}/${category.id}`);
+    return res.status(HttpStatus.CREATED).json(category);
   }
 
   @Get()
@@ -33,13 +43,7 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  async findOne(
-    @Req() req: Request,
-    @Res() res: Response,
-    @Param('id', ParseUUIDPipe) id: string,
-  ) {
-    const category: Category = await this.categoriesService.findOne(id);
-    res.setHeader('Location', `${req.path}/${category.id}`);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.categoriesService.findOne(id);
   }
 

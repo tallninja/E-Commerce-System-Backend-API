@@ -19,6 +19,9 @@ export class Category {
   @Column({ name: 'name' })
   name: string;
 
+  @Column({ name: 'slug' })
+  slug: string;
+
   @Column({ name: 'description', nullable: true })
   desc: string;
 

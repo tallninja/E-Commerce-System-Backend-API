@@ -4,6 +4,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
+import { slugify } from '../utils';
 
 @Injectable()
 export class CategoriesService {
@@ -15,6 +16,7 @@ export class CategoriesService {
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const category: Category =
       this.categoryRepository.create(createCategoryDto);
+    category.slug = slugify(category.name);
     return this.categoryRepository.save(category);
   }
 
@@ -34,6 +36,7 @@ export class CategoriesService {
   ): Promise<Category> {
     const category: Category = await this.findOne(id);
     Object.assign(category, updateCategoryDto);
+    category.slug = slugify(category.name);
     return this.categoryRepository.save(category);
   }
 
