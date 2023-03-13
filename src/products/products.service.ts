@@ -1,10 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { slugify } from 'src/utils';
+
+interface FindOneWhere {
+  name?: string;
+  slug?: string;
+  sku?: string;
+}
 
 @Injectable()
 export class ProductsService {
@@ -16,6 +26,12 @@ export class ProductsService {
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const product: Product = this.productRepository.create(createProductDto);
     product.slug = slugify(product.name);
+    const existingProduct = await this.findOneBy({
+      name: product.name,
+      slug: product.slug,
+    });
+    if (existingProduct)
+      throw new BadRequestException('Product Already Exists');
     return this.productRepository.save(product);
   }
 
@@ -42,5 +58,9 @@ export class ProductsService {
   async remove(id: string): Promise<Product> {
     const product = await this.findOne(id);
     return this.productRepository.softRemove(product);
+  }
+
+  async findOneBy(where: FindOneWhere): Promise<Product | null> {
+    return this.productRepository.findOneBy(where);
   }
 }

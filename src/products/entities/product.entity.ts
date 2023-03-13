@@ -25,7 +25,7 @@ export class Product {
   @Column({ name: 'sku', unique: true, nullable: false })
   sku: string;
 
-  @Column({ name: 'price', type: 'float', scale: 2, nullable: false })
+  @Column({ name: 'price', type: 'decimal', scale: 2, nullable: false })
   price: number;
 
   @CreateDateColumn({ name: 'created_at', nullable: false })

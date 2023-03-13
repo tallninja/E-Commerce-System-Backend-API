@@ -1,4 +1,32 @@
-@BASE_URL=http://localhost:5000/api/v1/
+@BASE_URL=http://localhost:5000/api/v1
 
 ###
 GET {{BASE_URL}}
+
+### GET Products ###
+GET {{BASE_URL}}/products
+
+### POST Product ###
+POST {{BASE_URL}}/products
+Content-Type: application/json
+
+{
+    "name": "Test Product 3",
+    "desc": "Test PRoduct 3 description",
+    "sku": "TP3",
+    "price": 20.99
+}
+
+### GET Product ###
+GET {{BASE_URL}}/products/b60b4434-7c73-4905-bf4f-cc74dd8ffd13
+
+### UPDATE Product ###
+PUT {{BASE_URL}}/products/ec10f3c3-b261-46c3-a3a1-0f4fd174981b
+Content-Type: application/json
+
+{
+    "name": "Test Product 2 - UPDATED"
+}
+
+### DELETE Product ###
+DELETE  {{BASE_URL}}/products/b60b4434-7c73-4905-bf4f-cc74dd8ffd13
