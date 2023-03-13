@@ -12,7 +12,7 @@ services:
       POSTGRES_DB: ecommdb
       PG_DATA: /data/postgres
     volumes:
-      - ./data:/data/postgres
+      - ecommdb:/data/postgres
 
   pgadmin:
     image: dpage/pgadmin4
@@ -25,5 +25,10 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@ecommdb.com
       PGADMIN_DEFAULT_PASSWORD: password
     volumes:
-      - ./pgadmin:/root/.pgadmin
+      - ecomm-pgadmin:/root/.pgadmin
       - ./db-servers.json:/pgadmin4/servers.json
+
+
+volumes:
+  ecommdb:
+  ecomm-pgadmin:
