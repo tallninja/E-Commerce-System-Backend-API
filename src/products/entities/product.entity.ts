@@ -1,3 +1,5 @@
+import { CartItem } from '../../cart-items/entities/cart-item.entity';
+import { Cart } from '../../carts/entities/cart.entity';
 import { Category } from '../../categories/entities/category.entity';
 import {
   Column,
@@ -5,6 +7,7 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
@@ -35,6 +38,9 @@ export class Product {
 
   @ManyToMany(() => Category, (category) => category.products)
   categories: Category[];
+
+  @OneToMany(() => CartItem, (item) => item.product)
+  cartItems: CartItem[];
 
   @CreateDateColumn({ name: 'created_at', nullable: false, update: false })
   createdAt: Date;

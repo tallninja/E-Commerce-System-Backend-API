@@ -28,7 +28,8 @@ export class CartsController {
     @Body() createCartDto: CreateCartDto,
   ) {
     const cart: Cart = await this.cartService.create(createCartDto);
-    res.setHeader('Location', `${req.hostname}/${req.path}/${cart.id}`);
+    const location: string = `${req.path}/${cart.id}`;
+    res.setHeader('Location', location);
     return res.status(HttpStatus.CREATED).json(cart);
   }
 
