@@ -6,6 +6,10 @@ import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { slugify } from '../utils';
 
+export interface FindOptionsWhere {
+  slug?: string;
+}
+
 @Injectable()
 export class CategoriesService {
   constructor(
@@ -43,5 +47,9 @@ export class CategoriesService {
   async remove(id: string): Promise<Category> {
     const category: Category = await this.findOne(id);
     return this.categoryRepository.softRemove(category);
+  }
+
+  async findBy(where: FindOptionsWhere): Promise<Category[]> {
+    return this.categoryRepository.find({ where });
   }
 }

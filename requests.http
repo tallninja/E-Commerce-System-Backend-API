@@ -6,14 +6,17 @@ GET {{BASE_URL}}
 ### GET Products ###
 GET {{BASE_URL}}/products
 
+### GET Products and filter ###
+GET {{BASE_URL}}/products/filter?category=technology
+
 ### POST Product ###
 POST {{BASE_URL}}/products
 Content-Type: application/json
 
 {
-    "name": "Test Product 7",
-    "desc": "Test PRoduct 7 description",
-    "sku": "TP7",
+    "name": "Test Product 8",
+    "desc": "Test PRoduct 8 description",
+    "sku": "TP8",
     "price": 20.12,
     "qty": 20
 }
@@ -22,11 +25,11 @@ Content-Type: application/json
 GET {{BASE_URL}}/products/b60b4434-7c73-4905-bf4f-cc74dd8ffd13
 
 ### UPDATE Product ###
-PUT {{BASE_URL}}/products/ec10f3c3-b261-46c3-a3a1-0f4fd174981b
+PUT {{BASE_URL}}/products/163bee88-d55d-4e84-b292-fb42daa6173c
 Content-Type: application/json
 
 {
-    "name": "Test Product 2 - UPDATED"
+    "categories": ["design"]
 }
 
 ### DELETE Product ###
@@ -41,8 +44,8 @@ POST {{BASE_URL}}/categories
 Content-Type: application/json
 
 {
-    "name": "Category 1",
-    "desc": "Category 1 description"
+    "name": "Technology",
+    "desc": "Technology description"
 }
 
 ### GET Category ###

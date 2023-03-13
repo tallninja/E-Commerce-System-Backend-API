@@ -1,4 +1,6 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { Category } from '../../categories/entities/category.entity';
+import { GetCategoryDto } from '../../categories/dto/get-category.dto';
 
 export class GetProductDto {
   @Expose()
@@ -21,6 +23,10 @@ export class GetProductDto {
 
   @Expose()
   qty: number;
+
+  @Expose()
+  @Type(() => GetCategoryDto)
+  categories: Category[];
 
   @Expose()
   createdAt: Date;

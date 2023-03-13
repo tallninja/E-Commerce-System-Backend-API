@@ -11,6 +11,7 @@ import {
   ParseUUIDPipe,
   Put,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -39,8 +40,15 @@ export class ProductsController {
   }
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<Product[]> {
     return this.productsService.findAll();
+  }
+
+  @Get('filter')
+  async findAndFilter(
+    @Query() filters: { category: string },
+  ): Promise<Product[]> {
+    return this.productsService.findAndFilter(filters);
   }
 
   @Get(':id')

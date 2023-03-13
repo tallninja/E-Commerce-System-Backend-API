@@ -1,4 +1,12 @@
-import { IsInt, IsNotEmpty, IsNumber, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -17,4 +25,8 @@ export class CreateProductDto {
   @IsInt()
   @Min(0)
   qty: number;
+
+  @IsOptional()
+  @IsString({ each: true })
+  categories: string[];
 }

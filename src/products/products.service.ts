@@ -7,8 +7,9 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { slugify } from 'src/utils';
+import { Category } from '../categories/entities/category.entity';
 
 interface FindOneWhere {
   name?: string;
@@ -21,10 +22,18 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
-    const product: Product = this.productRepository.create(createProductDto);
+    const categories: Category[] = await this.categoryRepository.findBy({
+      slug: In(createProductDto?.categories),
+    });
+    const product: Product = this.productRepository.create({
+      ...createProductDto,
+      categories,
+    });
     product.slug = slugify(product.name);
     const existingProduct = await this.findOneBy({
       name: product.name,
@@ -50,7 +59,10 @@ export class ProductsService {
     updateProductDto: UpdateProductDto,
   ): Promise<Product> {
     const product = await this.findOne(id);
-    Object.assign(product, updateProductDto);
+    const categories: Category[] = await this.categoryRepository.findBy({
+      slug: In(updateProductDto?.categories),
+    });
+    Object.assign(product, { ...updateProductDto, categories });
     product.slug = slugify(product.name);
     return this.productRepository.save(product);
   }
@@ -62,5 +74,12 @@ export class ProductsService {
 
   async findOneBy(where: FindOneWhere): Promise<Product | null> {
     return this.productRepository.findOneBy(where);
+  }
+
+  async findAndFilter(filter: { category: string }): Promise<Product[]> {
+    const categories: string[] = filter.category.split(',');
+    return this.productRepository.findBy({
+      categories: { slug: In(categories) },
+    });
   }
 }
