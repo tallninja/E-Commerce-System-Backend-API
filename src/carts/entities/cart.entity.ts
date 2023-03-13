@@ -1,3 +1,4 @@
+import { DecimalTransformer } from 'src/utils';
 import { CartItem } from '../../cart-items/entities/cart-item.entity';
 import {
   Column,
@@ -14,7 +15,14 @@ export class Cart {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'total', type: 'decimal', scale: 2, default: 0.0 })
+  @Column({
+    name: 'total',
+    type: 'numeric',
+    precision: 4,
+    scale: 2,
+    default: 0,
+    transformer: new DecimalTransformer(),
+  })
   total: number;
 
   @OneToMany(() => CartItem, (item) => item.cart)

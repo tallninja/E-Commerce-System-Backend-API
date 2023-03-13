@@ -1,0 +1,28 @@
+@CATEGORIES_URL=http://localhost:5000/api/v1/categories
+
+### GET Categories ###
+GET {{CATEGORIES_URL}}
+
+### POST Category ###
+POST {{CATEGORIES_URL}}
+Content-Type: application/json
+
+{
+    "name": "Beauty",
+    "desc": "Beauty description"
+}
+
+### GET Category ###
+GET {{CATEGORIES_URL}}/4d1c531e-5abf-4418-9c0d-c81ad7ebe72e
+
+
+### UPDATE Category ###
+PATCH {{CATEGORIES_URL}}/4d1c531e-5abf-4418-9c0d-c81ad7ebe72e
+Content-Type: application/json
+
+{
+    "name": "Category 1 UPDATED"
+}
+
+### DELETE Category ###
+DELETE {{CATEGORIES_URL}}/4d1c531e-5abf-4418-9c0d-c81ad7ebe72e

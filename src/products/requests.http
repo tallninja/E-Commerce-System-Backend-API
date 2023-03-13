@@ -1,0 +1,34 @@
+@PRODUCTS_URL=http://localhost:5000/api/v1/products
+
+### GET Products ###
+GET {{PRODUCTS_URL}}
+
+### GET Products and filter ###
+GET {{PRODUCTS_URL}}/filter?category=technology
+
+### POST Product ###
+POST {{PRODUCTS_URL}}
+Content-Type: application/json
+
+{
+    "name": "Test Product 4",
+    "desc": "Test PRoduct 4 description",
+    "sku": "TP4",
+    "price": 10.55,
+    "qty": 20,
+    "categories": ["technology"]
+}
+
+### GET Product ###
+GET {{PRODUCTS_URL}}/b60b4434-7c73-4905-bf4f-cc74dd8ffd13
+
+### UPDATE Product ###
+PUT {{PRODUCTS_URL}}/163bee88-d55d-4e84-b292-fb42daa6173c
+Content-Type: application/json
+
+{
+    "categories": ["design"]
+}
+
+### DELETE Product ###
+DELETE  {{PRODUCTS_URL}}/b60b4434-7c73-4905-bf4f-cc74dd8ffd13

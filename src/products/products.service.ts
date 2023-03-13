@@ -27,20 +27,29 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
-    const categories: Category[] = await this.categoryRepository.findBy({
-      slug: In(createProductDto?.categories),
-    });
+    let categories: Category[] = [];
+
+    if (createProductDto.categories)
+      categories = await this.categoryRepository.findBy({
+        slug: In(createProductDto?.categories),
+      });
+
     const product: Product = this.productRepository.create({
       ...createProductDto,
       categories,
     });
+
+    // update the slug
     product.slug = slugify(product.name);
+
     const existingProduct = await this.findOneBy({
       name: product.name,
       slug: product.slug,
     });
+
     if (existingProduct)
       throw new BadRequestException('Product Already Exists');
+
     return this.productRepository.save(product);
   }
 

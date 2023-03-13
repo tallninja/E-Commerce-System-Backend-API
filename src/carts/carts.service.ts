@@ -21,7 +21,10 @@ export class CartsService {
   }
 
   async findOne(id: string): Promise<Cart> {
-    const cart: Cart = await this.cartRepository.findOneBy({ id });
+    const cart: Cart = await this.cartRepository.findOne({
+      where: { id },
+      relations: { items: true },
+    });
     if (!cart) throw new NotFoundException('Cart Not Found');
     return cart;
   }

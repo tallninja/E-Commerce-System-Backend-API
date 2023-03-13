@@ -1,0 +1,21 @@
+@CART_ITEMS_URL=http://localhost:5000/api/v1/cart-items
+
+### GET Cart Items ###
+GET {{CART_ITEMS_URL}}
+
+### POST Cart Item ###
+POST {{CART_ITEMS_URL}}
+Content-Type: application/json
+
+{
+    "quantity": 3,
+    "cart": {
+        "id": "0cfd6676-a1bf-48da-8a71-a33635682f78"
+    },
+    "product": {
+        "id": "ebabfabb-c45c-4c30-9d52-83688abe5967"
+    }
+}
+
+### DELETE Cart Item ###
+DELETE {{CART_ITEMS_URL}}/69c2732b-6f8a-4dde-8165-831342689a2f
