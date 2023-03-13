@@ -35,6 +35,7 @@ export class ProductsService {
   ): Promise<Product> {
     const product = await this.findOne(id);
     Object.assign(product, updateProductDto);
+    product.slug = slugify(product.name);
     return this.productRepository.save(product);
   }
 
