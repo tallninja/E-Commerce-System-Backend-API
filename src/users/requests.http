@@ -1,0 +1,30 @@
+@USERS_URL=http://localhost:5000/api/v1/users
+
+### GET Users ###
+GET {{USERS_URL}}
+
+### POST User ###
+POST {{USERS_URL}}
+Content-Type: application/json
+
+{
+    "firstName": "Ernest",
+    "lastName": "Wambua",
+    "email": "ernestwambua2@gmail.com",
+    "phone": "+254719286396",
+    "password": "password123"
+}
+
+### GET User ###
+GET {{USERS_URL}}/2979f1cd-1806-4350-a1a1-6801f98e719a
+
+### PATCH User ###
+PATCH {{USERS_URL}}/2979f1cd-1806-4350-a1a1-6801f98e719a
+Content-Type: application/json
+
+{
+    "firstName": "Meshack"
+}
+
+### DELETE User ###
+DELETE {{USERS_URL}}/2979f1cd-1806-4350-a1a1-6801f98e719a

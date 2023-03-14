@@ -19,7 +19,7 @@ export class User {
   @Column({ name: 'last_name', length: 20 })
   lastName: string;
 
-  @Column({ name: 'email', length: 50 })
+  @Column({ name: 'email', length: 50, unique: true })
   email: string;
 
   @Column({ name: 'phone_number', length: 13 })
@@ -28,7 +28,7 @@ export class User {
   @Column({ name: 'password' })
   password: string;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ name: 'created_at', update: false })
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
