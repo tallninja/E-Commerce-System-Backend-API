@@ -3,11 +3,11 @@
 ### GET Carts ###
 GET {{CARTS_URL}}
 
-### CREATE Cart ###
+### CREATE Carts ###
 POST {{CARTS_URL}}
 
 ### GET Cart ###
-GET {{CARTS_URL}}/0cfd6676-a1bf-48da-8a71-a33635682f78
+GET {{CARTS_URL}}/fa60a671-4129-48a3-b3c0-28c4db2c8a20
 
 ### PUT Cart ###
 PUT {{CARTS_URL}}/fe06afb2-4090-4aef-89a6-159a769dc7af

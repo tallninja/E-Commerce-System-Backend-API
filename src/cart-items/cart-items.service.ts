@@ -3,7 +3,7 @@ import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartItem } from './entities/cart-item.entity';
-import { Repository } from 'typeorm';
+import { DataSource, QueryRunner, Repository } from 'typeorm';
 import { CartsService } from 'src/carts/carts.service';
 import { Cart } from '../carts/entities/cart.entity';
 import { ProductsService } from '../products/products.service';
@@ -21,6 +21,7 @@ export class CartItemsService {
     private readonly cartItemRepository: Repository<CartItem>,
     private readonly cartsService: CartsService,
     private readonly productsService: ProductsService,
+    private readonly dataSource: DataSource,
   ) {}
 
   async create(createCartItemDto: CreateCartItemDto): Promise<CartItem> {
@@ -33,6 +34,8 @@ export class CartItemsService {
 
     // increase the total in cart
     const total: number = cart.total + product.price * cartItem.quantity;
+
+    // need to use a transaction here
     await this.cartsService.update(cart.id, { total });
 
     return this.cartItemRepository.save(cartItem);
@@ -70,11 +73,15 @@ export class CartItemsService {
 
     let total: number = 0;
 
-    if (updateCartItemDto.quantity < cartItem.quantity)
-      total = cart.total - product.price * updateCartItemDto.quantity;
+    if (updateCartItemDto.quantity < cartItem.quantity) {
+      const diff: number = cartItem.quantity - updateCartItemDto.quantity;
+      total = cart.total - product.price * diff;
+    }
 
-    if (updateCartItemDto.quantity > cartItem.quantity)
-      total = cart.total + product.price * updateCartItemDto.quantity;
+    if (updateCartItemDto.quantity > cartItem.quantity) {
+      const diff: number = updateCartItemDto.quantity - cartItem.quantity;
+      total = cart.total + product.price * diff;
+    }
 
     Object.assign(cartItem, updateCartItemDto);
 
@@ -94,8 +101,8 @@ export class CartItemsService {
 
     // increase the total in cart
     const total: number = cart.total - product.price * cartItem.quantity;
-    await this.cartsService.update(cart.id, { total });
 
+    await this.cartsService.update(cart.id, { total });
     return this.cartItemRepository.remove(cartItem);
   }
 }
