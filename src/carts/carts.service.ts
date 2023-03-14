@@ -4,15 +4,20 @@ import { UpdateCartDto } from './dto/update-cart.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cart } from './entities/cart.entity';
 import { Repository } from 'typeorm';
+import { UsersService } from '../users/users.service';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class CartsService {
   constructor(
     @InjectRepository(Cart) private readonly cartRepository: Repository<Cart>,
+    private readonly userService: UsersService,
   ) {}
 
   async create(createCartDto: CreateCartDto): Promise<Cart> {
+    const user: User = await this.userService.findOne(createCartDto.user.id);
     const cart: Cart = this.cartRepository.create(createCartDto);
+    cart.user = user;
     return this.cartRepository.save(cart);
   }
 

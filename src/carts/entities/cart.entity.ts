@@ -4,11 +4,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
 } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
 
 @Entity('carts')
 export class Cart {
@@ -26,7 +29,11 @@ export class Cart {
   total: number;
 
   @OneToMany(() => CartItem, (item) => item.cart)
+  @JoinColumn()
   items: CartItem[];
+
+  @OneToOne(() => User)
+  user: User;
 
   @CreateDateColumn({ name: 'created_at', update: false })
   createdAt: Date;
