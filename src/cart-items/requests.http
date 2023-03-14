@@ -17,5 +17,16 @@ Content-Type: application/json
     }
 }
 
+### GET Cart Item ###
+GET {{CART_ITEMS_URL}}/c741feed-3d4e-4598-b4f2-42ba1c43365b
+
+### PATCH Cart Item ###
+PATCH {{CART_ITEMS_URL}}/c741feed-3d4e-4598-b4f2-42ba1c43365b
+Content-Type: application/json
+
+{
+    "quantity": 2
+}
+
 ### DELETE Cart Item ###
 DELETE {{CART_ITEMS_URL}}/69c2732b-6f8a-4dde-8165-831342689a2f

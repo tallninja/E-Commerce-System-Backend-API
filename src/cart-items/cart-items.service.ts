@@ -32,8 +32,8 @@ export class CartItemsService {
     );
 
     // increase the total in cart
-    const total = cart.total + product.price * cartItem.quantity;
-    this.cartsService.update(cart.id, { total });
+    const total: number = cart.total + product.price * cartItem.quantity;
+    await this.cartsService.update(cart.id, { total });
 
     return this.cartItemRepository.save(cartItem);
   }
@@ -58,8 +58,27 @@ export class CartItemsService {
     id: string,
     updateCartItemDto: UpdateCartItemDto,
   ): Promise<CartItem> {
-    const cartItem: CartItem = await this.findOne(id);
+    const cartItem: CartItem = await this.findOne(id, {
+      cart: true,
+      product: true,
+    });
+
+    const cart: Cart = await this.cartsService.findOne(cartItem.cart.id);
+    const product: Product = await this.productsService.findOne(
+      cartItem.product.id,
+    );
+
+    let total: number = 0;
+
+    if (updateCartItemDto.quantity < cartItem.quantity)
+      total = cart.total - product.price * updateCartItemDto.quantity;
+
+    if (updateCartItemDto.quantity > cartItem.quantity)
+      total = cart.total + product.price * updateCartItemDto.quantity;
+
     Object.assign(cartItem, updateCartItemDto);
+
+    await this.cartsService.update(cart.id, { total });
     return this.cartItemRepository.save(cartItem);
   }
 
@@ -74,8 +93,8 @@ export class CartItemsService {
     );
 
     // increase the total in cart
-    const total = cart.total - product.price * cartItem.quantity;
-    this.cartsService.update(cart.id, { total });
+    const total: number = cart.total - product.price * cartItem.quantity;
+    await this.cartsService.update(cart.id, { total });
 
     return this.cartItemRepository.remove(cartItem);
   }

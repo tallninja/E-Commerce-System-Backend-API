@@ -10,14 +10,18 @@ import {
   Req,
   Res,
   HttpStatus,
+  Put,
 } from '@nestjs/common';
 import { CartsService } from './carts.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { Cart } from './entities/cart.entity';
 import { Request, Response } from 'express';
+import { Serialize } from 'src/common';
+import { GetCartDto } from './dto/get-cart.dto';
 
 @Controller('carts')
+@Serialize(GetCartDto)
 export class CartsController {
   constructor(private readonly cartService: CartsService) {}
 

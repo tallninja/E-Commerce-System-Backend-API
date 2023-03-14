@@ -7,13 +7,17 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Put,
 } from '@nestjs/common';
 import { CartItemsService } from './cart-items.service';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { CartItem } from './entities/cart-item.entity';
+import { Serialize } from '../common';
+import { GetCartItemDto } from './dto/get-cart-item.dto';
 
 @Controller('cart-items')
+@Serialize(GetCartItemDto)
 export class CartItemsController {
   constructor(private readonly cartItemsService: CartItemsService) {}
 

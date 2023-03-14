@@ -1,7 +1,4 @@
-import { IsNumber, IsOptional, Min } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateCartDto } from './create-cart.dto';
 
-export class UpdateCartDto {
-  @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 2 })
-  total: number;
-}
+export class UpdateCartDto extends PartialType(CreateCartDto) {}
