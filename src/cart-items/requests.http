@@ -10,7 +10,7 @@ Content-Type: application/json
 {
     "quantity": 5,
     "cart": {
-        "id": "fa60a671-4129-48a3-b3c0-28c4db2c8a20"
+        "id": "08c6beaa-9eaf-49e1-a5ab-c213d7cbaa23"
     },
     "product": {
         "id": "ebabfabb-c45c-4c30-9d52-83688abe5967"
