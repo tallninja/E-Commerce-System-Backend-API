@@ -27,6 +27,12 @@ services:
     volumes:
       - ecomm-pgadmin:/root/.pgadmin
       - ./db-servers.json:/pgadmin4/servers.json
+  
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    restart: unless-stopped
 
 
 volumes:
