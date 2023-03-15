@@ -23,3 +23,6 @@ Content-Type: application/json
 
 ### GET User Profile ###
 GET {{AUTH_URL}}/profile
+
+### LOGOUT User ###
+GET {{AUTH_URL}}/logout

@@ -1,4 +1,12 @@
-import { Controller, Post, Body, UseGuards, Req, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Req,
+  Get,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard, RequireAuthGuard, Serialize } from '../common';
 import { Request } from 'express';
@@ -26,5 +34,12 @@ export class AuthController {
   @UseGuards(RequireAuthGuard)
   async profile(@Req() req: Request) {
     return req.user;
+  }
+
+  @Get('logout')
+  async logout(@Req() req: Request) {
+    return req.logOut(null, (err) => {
+      if (err) throw new InternalServerErrorException(err.message);
+    });
   }
 }
