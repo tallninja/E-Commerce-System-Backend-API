@@ -1,5 +1,13 @@
-import { CacheModule, Module } from '@nestjs/common';
+import {
+  Inject,
+  Logger,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as session from 'express-session';
+import * as passport from 'passport';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
@@ -8,6 +16,9 @@ import { CartsModule } from './carts/carts.module';
 import { CartItemsModule } from './cart-items/cart-items.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { RedisModule } from './redis/redis.module';
+import { REDIS } from './redis/redis.constants';
+import RedisStore from 'connect-redis';
 
 @Module({
   imports: [
@@ -19,7 +30,7 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
-    CacheModule.register({ isGlobal: true }),
+    RedisModule,
     ProductsModule,
     CategoriesModule,
     CartsModule,
@@ -28,6 +39,32 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  constructor(@Inject(REDIS) private readonly redisClient: any) {}
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        session({
+          store: new RedisStore({ client: this.redisClient }),
+          saveUninitialized: false,
+          secret: 'ksahlhsjj',
+          resave: false,
+          cookie: {
+            httpOnly: false,
+            sameSite: true,
+            maxAge: 1 * 24 * 60 * 60 * 1000, // one day
+          },
+        }),
+        passport.initialize(),
+        passport.session(),
+      )
+      .forRoutes('*');
+  }
+
+  onModuleInit() {
+    this.redisClient.connect();
+  }
+}

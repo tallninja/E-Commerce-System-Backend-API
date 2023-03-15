@@ -1,0 +1,25 @@
+@AUTH_URL=http://localhost:5000/api/v1/auth
+
+### REGISTER User ###
+POST {{AUTH_URL}}/register
+Content-Type: application/json
+
+{
+    "firstName": "Ernest",
+    "lastName": "Wambua",
+    "email": "ernestwambua@gmail.com",
+    "phone": "+254719286396",
+    "password": "EGhtyPo3478!"
+}
+
+### LOGIN User ###
+POST {{AUTH_URL}}/login
+Content-Type: application/json
+
+{
+    "email": "ernestwambua@gmail.com",
+    "password": "EGhtyPo3478!"
+}
+
+### GET User Profile ###
+GET {{AUTH_URL}}/profile
