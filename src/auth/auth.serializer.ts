@@ -10,7 +10,7 @@ export class AuthSerializer extends PassportSerializer {
   }
 
   serializeUser(user: User, done: Function) {
-    done(null, { id: user.id });
+    done(null, { id: user.id, roles: user.roles });
   }
 
   async deserializeUser(payload: { id: string }, done: Function) {

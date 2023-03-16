@@ -8,7 +8,12 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard, RequireAuthGuard, Serialize } from '../common';
+import {
+  LocalAuthGuard,
+  RequireAuth,
+  RequireAuthGuard,
+  Serialize,
+} from '../common';
 import { Request } from 'express';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -31,12 +36,13 @@ export class AuthController {
   }
 
   @Get('profile')
-  @UseGuards(RequireAuthGuard)
+  @RequireAuth()
   async profile(@Req() req: Request) {
     return req.user;
   }
 
   @Get('logout')
+  @RequireAuth()
   async logout(@Req() req: Request) {
     return req.logOut(null, (err) => {
       if (err) throw new InternalServerErrorException(err.message);

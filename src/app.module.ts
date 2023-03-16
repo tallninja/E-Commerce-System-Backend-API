@@ -21,6 +21,8 @@ import { RedisModule } from './redis/redis.module';
 import { REDIS } from './redis/redis.constants';
 import { RolesModule } from './roles/roles.module';
 import RedisStore from 'connect-redis';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './common';
 
 @Module({
   imports: [
@@ -42,7 +44,7 @@ import RedisStore from 'connect-redis';
     RolesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, Logger],
+  providers: [{ provide: APP_GUARD, useClass: RolesGuard }, AppService, Logger],
 })
 export class AppModule implements NestModule {
   constructor(@Inject(REDIS) private readonly redisClient: any) {}
