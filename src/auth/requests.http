@@ -17,8 +17,8 @@ POST {{AUTH_URL}}/login
 Content-Type: application/json
 
 {
-    "email": "ernestwambua@gmail.com",
-    "password": "EGhtyPo3478!"
+    "email": "admin@ecommdb.com",
+    "password": "Op76!hgh90@"
 }
 
 ### GET User Profile ###
