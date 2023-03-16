@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### GET User ###
-GET {{USERS_URL}}/d0f11cfd-4d94-4155-86fe-85b35872275d
+GET {{USERS_URL}}/e99583e6-8c49-487b-93b0-e0d726a8b7b2
 
 ### PATCH User ###
 PATCH {{USERS_URL}}/2979f1cd-1806-4350-a1a1-6801f98e719a
@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### DELETE User ###
-DELETE {{USERS_URL}}/2979f1cd-1806-4350-a1a1-6801f98e719a
+DELETE {{USERS_URL}}/3faf0cfa-e8ea-4998-9677-83ec5b4cd7d2

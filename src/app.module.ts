@@ -23,6 +23,12 @@ import { RolesModule } from './roles/roles.module';
 import RedisStore from 'connect-redis';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common';
+import { RolesService } from './roles/roles.service';
+import { UsersService } from './users/users.service';
+import { UserRoles } from './roles/entities/user.roles';
+import { Role } from './roles/entities/role.entity';
+import { User } from './users/entities/user.entity';
+import { CreateUserDto } from './users/dto/create-user.dto';
 
 @Module({
   imports: [
@@ -47,7 +53,11 @@ import { RolesGuard } from './common';
   providers: [{ provide: APP_GUARD, useClass: RolesGuard }, AppService, Logger],
 })
 export class AppModule implements NestModule {
-  constructor(@Inject(REDIS) private readonly redisClient: any) {}
+  constructor(
+    @Inject(REDIS) private readonly redisClient: any,
+    private readonly rolesService: RolesService,
+    private readonly usersService: UsersService,
+  ) {}
 
   configure(consumer: MiddlewareConsumer) {
     consumer
@@ -69,8 +79,59 @@ export class AppModule implements NestModule {
       .forRoutes('*');
   }
 
-  onModuleInit() {
+  async onModuleInit() {
     this.redisClient.on('error', (err) => console.error('Error:', err.message));
-    this.redisClient.connect();
+    await this.redisClient.connect();
+    await this.createRoles();
+    await this.createAdminUser();
+  }
+
+  async createRoles() {
+    Object.values(UserRoles).forEach(async (roleName: string) => {
+      const role: Role = await this.rolesService.findOneBy({
+        name: UserRoles[roleName],
+      });
+      if (!role) {
+        try {
+          const newRole: Role = await this.rolesService.create({
+            name: UserRoles[roleName],
+          });
+          console.log(`Created ${newRole.name} role.`);
+        } catch (err) {}
+      }
+    });
+  }
+
+  async createAdminUser() {
+    const userDetails: Partial<User> = {
+      firstName: 'Admin',
+      lastName: 'Admin',
+      email: 'admin@ecommdb.com',
+      phone: '+254719286396',
+      password: 'Op76!hgh90@',
+    };
+
+    const existingUser: User = await this.usersService.findOneBy({
+      email: userDetails.email,
+    });
+
+    if (!existingUser) {
+      let adminRole: Role;
+
+      try {
+        adminRole = await this.rolesService.create({ name: UserRoles.ADMIN });
+      } catch (err) {
+        adminRole = await this.rolesService.findOneBy({
+          name: UserRoles.ADMIN,
+        });
+      }
+
+      const adminUser: User = await this.usersService.create(
+        userDetails as CreateUserDto,
+      );
+      adminUser.roles.push(adminRole);
+      await this.usersService.update(adminUser.id, adminUser);
+      console.log('Created Admin User');
+    }
   }
 }

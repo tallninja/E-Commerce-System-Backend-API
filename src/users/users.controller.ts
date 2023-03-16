@@ -23,7 +23,7 @@ import { UserRoles } from 'src/roles/entities/user.roles';
 
 @Controller('users')
 @Serialize(GetUserDto)
-@RequiredRoles(UserRoles.ADMIN)
+// @RequiredRoles(UserRoles.ADMIN)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
