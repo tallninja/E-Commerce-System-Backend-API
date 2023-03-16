@@ -1,8 +1,11 @@
+import { Role } from '../../roles/entities/role.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
@@ -27,6 +30,10 @@ export class User {
 
   @Column({ name: 'password' })
   password: string;
+
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable()
+  roles: Role[];
 
   @CreateDateColumn({ name: 'created_at', update: false })
   createdAt: Date;

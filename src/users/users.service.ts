@@ -9,6 +9,9 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { hashPassword } from '../utils';
+import { RolesService } from '../roles/roles.service';
+import { Role } from '../roles/entities/role.entity';
+import { UserRoles } from '../roles/entities/user.roles';
 
 interface FindOptionsWhere {
   id?: string;
@@ -19,6 +22,7 @@ interface FindOptionsWhere {
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly rolesService: RolesService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -27,6 +31,12 @@ export class UsersService {
       throw new BadRequestException('User with that email already exists');
 
     const user: User = this.userRepository.create(createUserDto);
+
+    // add default USER role to every new user
+    const userRole: Role = await this.rolesService.findOneBy({
+      name: UserRoles.USER,
+    });
+    user.roles = [userRole];
     user.password = await hashPassword(user.password);
     return this.userRepository.save(user);
   }

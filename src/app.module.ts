@@ -1,6 +1,7 @@
 import {
   Inject,
   Logger,
+  LoggerService,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from './redis/redis.module';
 import { REDIS } from './redis/redis.constants';
+import { RolesModule } from './roles/roles.module';
 import RedisStore from 'connect-redis';
 
 @Module({
@@ -37,6 +39,7 @@ import RedisStore from 'connect-redis';
     CartItemsModule,
     UsersModule,
     AuthModule,
+    RolesModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
@@ -65,6 +68,7 @@ export class AppModule implements NestModule {
   }
 
   onModuleInit() {
+    this.redisClient.on('error', (err) => console.error('Error:', err.message));
     this.redisClient.connect();
   }
 }

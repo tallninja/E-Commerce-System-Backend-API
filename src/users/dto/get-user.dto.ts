@@ -1,4 +1,5 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { GetRoleDto } from 'src/roles/dto/get-role.dto';
 
 export class GetUserDto {
   @Expose()
@@ -15,6 +16,10 @@ export class GetUserDto {
 
   @Expose()
   phone: string;
+
+  @Expose()
+  @Type(() => GetRoleDto)
+  roles: GetRoleDto[];
 
   @Expose()
   createdAt: Date;
