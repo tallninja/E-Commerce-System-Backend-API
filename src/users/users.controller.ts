@@ -10,6 +10,7 @@ import {
   Req,
   Res,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -38,6 +39,11 @@ export class UsersController {
   @Get()
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
+  }
+
+  @Get('/filter')
+  async findAndFilter(@Query() query: { roles: string }) {
+    return this.usersService.findAndFilter(query);
   }
 
   @Get(':id')

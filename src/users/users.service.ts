@@ -7,7 +7,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { hashPassword } from '../utils';
 import { RolesService } from '../roles/roles.service';
 import { Role } from '../roles/entities/role.entity';
@@ -64,5 +64,17 @@ export class UsersService {
 
   async findOneBy(where: FindOptionsWhere): Promise<User | null> {
     return this.userRepository.findOne({ where });
+  }
+
+  async findAndFilter(filter: { roles: string }): Promise<User[]> {
+    if (!filter) throw new BadRequestException('Missing filter query');
+    const roles: string[] = filter.roles
+      .split(',')
+      .map((role) => role.toUpperCase());
+    return this.findByRoles(roles);
+  }
+
+  async findByRoles(roles: string[]) {
+    return this.userRepository.findBy({ roles: { name: In(roles) } });
   }
 }

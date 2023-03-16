@@ -18,7 +18,7 @@ export class GetUserDto {
   phone: string;
 
   @Expose()
-  @Type(() => GetRoleDto)
+  @Type(() => Array<GetRoleDto>)
   roles: GetRoleDto[];
 
   @Expose()
