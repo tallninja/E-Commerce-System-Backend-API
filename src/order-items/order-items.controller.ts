@@ -15,10 +15,12 @@ import { OrderItemsService } from './order-items.service';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { Request, Response } from 'express';
 import { OrderItem } from './entities/order-item.entity';
-import { RequireAuth, RequiredRoles } from 'src/common';
+import { RequireAuth, RequiredRoles, Serialize } from '../common';
 import { UserRoles } from '../roles/entities/user.roles';
+import { GetOrderItemDto } from './dto/get-order-items.dto';
 
 @Controller('order-items')
+@Serialize(GetOrderItemDto)
 @RequireAuth()
 export class OrderItemsController {
   constructor(private readonly orderItemsService: OrderItemsService) {}
