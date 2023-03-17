@@ -33,9 +33,17 @@ export class UsersService {
     const user: User = this.userRepository.create(createUserDto);
 
     // add default USER role to every new user
-    const userRole: Role = await this.rolesService.findOneBy({
+    let userRole: Role = await this.rolesService.findOneBy({
       name: UserRoles.USER,
     });
+
+    if (!userRole) {
+      try {
+        userRole = await this.rolesService.create({ name: UserRoles.USER });
+        console.log(`Created ${userRole.name} role.`);
+      } catch (error) {}
+    }
+
     user.roles = [userRole];
     user.password = await hashPassword(user.password);
     return this.userRepository.save(user);
@@ -79,5 +87,37 @@ export class UsersService {
 
   async findByRoles(roles: string[]) {
     return this.userRepository.findBy({ roles: { name: In(roles) } });
+  }
+
+  async onModuleInit() {
+    const userDetails: Partial<User> = {
+      firstName: 'Admin',
+      lastName: 'Admin',
+      email: 'admin@ecommdb.com',
+      phone: '+254719286396',
+      password: 'Op76!hgh90@',
+    };
+
+    const existingUser: User = await this.userRepository.findOneBy({
+      email: userDetails.email,
+    });
+
+    if (!existingUser) {
+      let adminRole: Role;
+
+      try {
+        adminRole = await this.rolesService.create({ name: UserRoles.ADMIN });
+        console.log(`Created ${adminRole.name} role.`);
+      } catch (err) {
+        adminRole = await this.rolesService.findOneBy({
+          name: UserRoles.ADMIN,
+        });
+      }
+
+      const adminUser: User = await this.create(userDetails as CreateUserDto);
+      adminUser.roles.push(adminRole);
+      await this.update(adminUser.id, adminUser);
+      console.log('Created Admin User');
+    }
   }
 }

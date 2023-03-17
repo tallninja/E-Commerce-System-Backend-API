@@ -31,6 +31,9 @@ export class User {
   @Column({ name: 'password' })
   password: string;
 
+  @Column({ name: 'avatar', default: 'https://bit.ly/3Wgeq06' })
+  avatar: string;
+
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable()
   roles: Role[];

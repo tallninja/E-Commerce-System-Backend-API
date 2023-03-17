@@ -12,13 +12,22 @@ Content-Type: application/json
     "password": "EGhtyPo3478!"
 }
 
-### LOGIN User ###
+### LOGIN Admin User ###
 POST {{AUTH_URL}}/login
 Content-Type: application/json
 
 {
     "email": "admin@ecommdb.com",
     "password": "Op76!hgh90@"
+}
+
+### LOGIN Normal User ###
+POST {{AUTH_URL}}/login
+Content-Type: application/json
+
+{
+    "email": "ernestwambua@gmail.com",
+    "password": "EGhtyPo3478!"
 }
 
 ### GET User Profile ###

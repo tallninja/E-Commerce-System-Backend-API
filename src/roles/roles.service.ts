@@ -46,4 +46,20 @@ export class RolesService {
   ): Promise<Role> {
     return this.rolesRepository.findOne({ where, relations });
   }
+
+  async onModuleInit() {
+    Object.values(UserRoles).forEach(async (roleName: string) => {
+      const role: Role = await this.findOneBy({
+        name: UserRoles[roleName],
+      });
+      if (!role) {
+        try {
+          const newRole: Role = await this.create({
+            name: UserRoles[roleName],
+          });
+          console.log(`Created ${newRole.name} role.`);
+        } catch (err) {}
+      }
+    });
+  }
 }

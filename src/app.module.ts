@@ -41,13 +41,13 @@ import { CreateUserDto } from './users/dto/create-user.dto';
       autoLoadEntities: true,
     }),
     RedisModule,
+    UsersModule,
+    RolesModule,
     ProductsModule,
     CategoriesModule,
     CartsModule,
     CartItemsModule,
-    UsersModule,
     AuthModule,
-    RolesModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: RolesGuard }, AppService, Logger],
@@ -82,56 +82,5 @@ export class AppModule implements NestModule {
   async onModuleInit() {
     this.redisClient.on('error', (err) => console.error('Error:', err.message));
     await this.redisClient.connect();
-    await this.createRoles();
-    await this.createAdminUser();
-  }
-
-  async createRoles() {
-    Object.values(UserRoles).forEach(async (roleName: string) => {
-      const role: Role = await this.rolesService.findOneBy({
-        name: UserRoles[roleName],
-      });
-      if (!role) {
-        try {
-          const newRole: Role = await this.rolesService.create({
-            name: UserRoles[roleName],
-          });
-          console.log(`Created ${newRole.name} role.`);
-        } catch (err) {}
-      }
-    });
-  }
-
-  async createAdminUser() {
-    const userDetails: Partial<User> = {
-      firstName: 'Admin',
-      lastName: 'Admin',
-      email: 'admin@ecommdb.com',
-      phone: '+254719286396',
-      password: 'Op76!hgh90@',
-    };
-
-    const existingUser: User = await this.usersService.findOneBy({
-      email: userDetails.email,
-    });
-
-    if (!existingUser) {
-      let adminRole: Role;
-
-      try {
-        adminRole = await this.rolesService.create({ name: UserRoles.ADMIN });
-      } catch (err) {
-        adminRole = await this.rolesService.findOneBy({
-          name: UserRoles.ADMIN,
-        });
-      }
-
-      const adminUser: User = await this.usersService.create(
-        userDetails as CreateUserDto,
-      );
-      adminUser.roles.push(adminRole);
-      await this.usersService.update(adminUser.id, adminUser);
-      console.log('Created Admin User');
-    }
   }
 }

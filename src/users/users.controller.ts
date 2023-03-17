@@ -17,12 +17,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request, Response } from 'express';
 import { User } from './entities/user.entity';
-import { RequiredRoles, Serialize } from 'src/common';
+import { RequireAuth, RequiredRoles, Serialize } from 'src/common';
 import { GetUserDto } from './dto/get-user.dto';
 import { UserRoles } from 'src/roles/entities/user.roles';
 
 @Controller('users')
 @Serialize(GetUserDto)
+@RequireAuth()
 @RequiredRoles(UserRoles.ADMIN)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
