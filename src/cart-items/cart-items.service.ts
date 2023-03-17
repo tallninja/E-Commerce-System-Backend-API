@@ -29,15 +29,21 @@ export class CartItemsService {
   ) {}
 
   async create(createCartItemDto: CreateCartItemDto): Promise<CartItem> {
-    let cartItem: CartItem = this.cartItemRepository.create(createCartItemDto);
-    const cart: Cart = await this.cartsService.findOne(cartItem.cart.id);
+    const cart: Cart = await this.cartsService.findOne(createCartItemDto.cart);
     const product: Product = await this.productsService.findOne(
-      cartItem.product.id,
+      createCartItemDto.product,
     );
 
     // calculate the total amount in cart
-    const total: number = cart.total + product.price * cartItem.quantity;
+    const total: number =
+      cart.total + product.price * createCartItemDto.quantity;
     cart.total = total;
+
+    let cartItem: CartItem = this.cartItemRepository.create({
+      ...createCartItemDto,
+      cart,
+      product,
+    });
 
     // use a DB transaction to ensure that the cart item and cart are updated appropriately
     const queryRunner: QueryRunner = this.dataSource.createQueryRunner();

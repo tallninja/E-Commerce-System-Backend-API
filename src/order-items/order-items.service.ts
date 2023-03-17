@@ -37,9 +37,9 @@ export class OrderItemsService {
       product,
     });
 
-    const remainingQuantity: number = product.qty - orderItem.quantity;
+    product.qty = product.qty - orderItem.quantity;
 
-    if (remainingQuantity < 0)
+    if (product.qty < 0)
       throw new BadRequestException('Not Enough Products In Stock');
 
     const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
@@ -48,10 +48,7 @@ export class OrderItemsService {
 
     try {
       orderItem = await queryRunner.manager.save(orderItem);
-      await queryRunner.manager.save({
-        ...product,
-        qty: remainingQuantity,
-      } as Product);
+      await queryRunner.manager.save(product);
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new InternalServerErrorException('Transaction Failed');

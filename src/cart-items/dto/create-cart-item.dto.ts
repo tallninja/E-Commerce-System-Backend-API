@@ -1,17 +1,11 @@
-import { IsInt, IsObject, Min } from 'class-validator';
-import { Cart } from '../../carts/entities/cart.entity';
-import { Product } from '../../products/entities/product.entity';
-import { Type } from 'class-transformer';
-import { PartialType } from '@nestjs/mapped-types';
+import { IsInt, IsNotEmpty, IsObject, Min } from 'class-validator';
 
 export class CreateCartItemDto {
-  @IsObject()
-  @Type(() => PartialType(Cart))
-  cart: Partial<Cart>;
+  @IsNotEmpty()
+  cart: string;
 
-  @IsObject()
-  @Type(() => PartialType(Product))
-  product: Product;
+  @IsNotEmpty()
+  product: string;
 
   @IsInt()
   @Min(1)
