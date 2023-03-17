@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateOrderItemDto } from './dto/create-order-item.dto';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DataSource, QueryRunner, Repository } from 'typeorm';
+import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { OrderItem } from './entities/order-item.entity';
-import { DataSource, Repository } from 'typeorm';
 import { OrdersService } from '../orders/orders.service';
 import { Order } from '../orders/entities/order.entity';
 import { ProductsService } from '../products/products.service';
@@ -26,12 +31,35 @@ export class OrderItemsService {
       createOrderItemDto.product,
     );
 
-    const orderItem: OrderItem = this.itemsRepository.create({
+    let orderItem: OrderItem = this.itemsRepository.create({
       ...createOrderItemDto,
       order,
       product,
     });
-    return this.itemsRepository.save(orderItem);
+
+    const remainingQuantity: number = product.qty - orderItem.quantity;
+
+    if (remainingQuantity < 0)
+      throw new BadRequestException('Not Enough Products In Stock');
+
+    const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      orderItem = await queryRunner.manager.save(orderItem);
+      await queryRunner.manager.save({
+        ...product,
+        qty: remainingQuantity,
+      } as Product);
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new InternalServerErrorException('Transaction Failed');
+    } finally {
+      await queryRunner.release();
+    }
+
+    return orderItem;
   }
 
   async findAll(): Promise<OrderItem[]> {
