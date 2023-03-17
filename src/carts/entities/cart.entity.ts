@@ -32,7 +32,8 @@ export class Cart {
   @JoinColumn()
   items: CartItem[];
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn()
   user: User;
 
   @CreateDateColumn({ name: 'created_at', update: false })
