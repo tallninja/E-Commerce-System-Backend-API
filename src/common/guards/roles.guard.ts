@@ -3,6 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { UserRoles } from '../../roles/entities/user.roles';
 import { User } from '../../users/entities/user.entity';
 import { Role } from '../../roles/entities/role.entity';
+import { Request } from 'express';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -15,9 +16,11 @@ export class RolesGuard implements CanActivate {
 
     if (!requiredRoles) return true;
 
-    const user: User = context.switchToHttp().getRequest().user;
+    const req: Request = context.switchToHttp().getRequest();
 
-    if (!user) return false;
+    if (!req.isAuthenticated()) return false;
+
+    const user: User = req.user as User;
 
     return requiredRoles.some(
       (requiredRole) =>

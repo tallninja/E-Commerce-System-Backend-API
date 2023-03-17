@@ -16,8 +16,9 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { Response, Request } from 'express';
-import { Serialize } from '../common';
+import { RequiredRoles, Serialize } from '../common';
 import { GetCategoryDto } from './dto/get-category.dto';
+import { UserRoles } from 'src/roles/entities/user.roles';
 
 @Controller('categories')
 @Serialize(GetCategoryDto)
@@ -48,6 +49,7 @@ export class CategoriesController {
   }
 
   @Patch(':id')
+  @RequiredRoles(UserRoles.MANAGER, UserRoles.ADMIN)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -56,6 +58,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @RequiredRoles(UserRoles.MANAGER, UserRoles.ADMIN)
   async remove(@Param('id', ParseUUIDPipe) id: string): Promise<Category> {
     return this.categoriesService.remove(id);
   }
