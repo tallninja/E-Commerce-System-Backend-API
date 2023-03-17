@@ -29,6 +29,7 @@ import { UserRoles } from './roles/entities/user.roles';
 import { Role } from './roles/entities/role.entity';
 import { User } from './users/entities/user.entity';
 import { CreateUserDto } from './users/dto/create-user.dto';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { CreateUserDto } from './users/dto/create-user.dto';
     CartsModule,
     CartItemsModule,
     AuthModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: RolesGuard }, AppService, Logger],

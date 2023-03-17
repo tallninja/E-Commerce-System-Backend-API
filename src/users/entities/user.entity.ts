@@ -1,3 +1,4 @@
+import { Order } from '../../orders/entities/order.entity';
 import { Role } from '../../roles/entities/role.entity';
 import {
   Column,
@@ -6,6 +7,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   VersionColumn,
@@ -37,6 +39,9 @@ export class User {
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable()
   roles: Role[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   @CreateDateColumn({ name: 'created_at', update: false })
   createdAt: Date;
