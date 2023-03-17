@@ -13,11 +13,13 @@ import { CartItemsService } from './cart-items.service';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { CartItem } from './entities/cart-item.entity';
-import { Serialize } from '../common';
+import { RequireAuth, RequiredRoles, Serialize } from '../common';
 import { GetCartItemDto } from './dto/get-cart-item.dto';
+import { UserRoles } from '../roles/entities/user.roles';
 
 @Controller('cart-items')
 @Serialize(GetCartItemDto)
+@RequireAuth()
 export class CartItemsController {
   constructor(private readonly cartItemsService: CartItemsService) {}
 
@@ -39,6 +41,7 @@ export class CartItemsController {
   }
 
   @Patch(':id')
+  @RequiredRoles(UserRoles.USER)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateCartItemDto: UpdateCartItemDto,
@@ -47,6 +50,7 @@ export class CartItemsController {
   }
 
   @Delete(':id')
+  @RequiredRoles(UserRoles.USER)
   async remove(@Param('id', ParseUUIDPipe) id: string): Promise<CartItem> {
     return this.cartItemsService.remove(id);
   }

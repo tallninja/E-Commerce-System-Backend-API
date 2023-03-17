@@ -15,11 +15,13 @@ import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from './entities/role.entity';
 import { Request, Response } from 'express';
-import { Serialize } from '../common';
+import { RequiredRoles, Serialize } from '../common';
 import { GetRoleDto } from './dto/get-role.dto';
+import { UserRoles } from './entities/user.roles';
 
 @Controller('roles')
 @Serialize(GetRoleDto)
+@RequiredRoles(UserRoles.ADMIN)
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 

@@ -18,8 +18,9 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { Request, Response } from 'express';
-import { Serialize } from '../common';
+import { RequiredRoles, Serialize } from '../common';
 import { GetProductDto } from './dto/get-product.dto';
+import { UserRoles } from '../roles/entities/user.roles';
 
 @Controller('products')
 @Serialize(GetProductDto)
@@ -27,6 +28,7 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
+  @RequiredRoles(UserRoles.MANAGER, UserRoles.ADMIN)
   async create(
     @Req() req: Request,
     @Res() res: Response,
@@ -57,6 +59,7 @@ export class ProductsController {
   }
 
   @Put(':id')
+  @RequiredRoles(UserRoles.MANAGER, UserRoles.ADMIN)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductDto: UpdateProductDto,
@@ -65,6 +68,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @RequiredRoles(UserRoles.MANAGER, UserRoles.ADMIN)
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.remove(id);
   }
