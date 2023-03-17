@@ -1,24 +1,13 @@
-import { Order } from 'src/orders/entities/order.entity';
-import { Product } from '../../products/entities/product.entity';
-import {
-  IsInt,
-  IsNotEmpty,
-  IsNotEmptyObject,
-  IsNumber,
-  IsObject,
-  Min,
-} from 'class-validator';
+import { IsInt, IsNotEmpty, IsUUID, Min } from 'class-validator';
 
 export class CreateOrderItemDto {
   @IsNotEmpty()
-  @IsNotEmptyObject()
-  @IsObject()
-  product: Product;
+  @IsUUID()
+  product: string;
 
   @IsNotEmpty()
-  @IsNotEmptyObject()
-  @IsObject()
-  order: Order;
+  @IsUUID()
+  order: string;
 
   @IsInt()
   @Min(1)

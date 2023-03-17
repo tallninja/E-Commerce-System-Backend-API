@@ -1,0 +1,28 @@
+@ORDER_ITEMS_URL=http://localhost:5000/api/v1/order-items
+
+### GET All Order Items ###
+GET {{ORDER_ITEMS_URL}}
+
+### POST Order Item ###
+POST {{ORDER_ITEMS_URL}}
+Content-Type: application/json
+
+{
+    "product": "ahkjsahkj",
+    "order": "ajkljdsald",
+    "quantity": 2
+}
+
+### GET Order Item ###
+GET {{ORDER_ITEMS_URL}}/sdhjshkj
+
+### PATCH Order Item ###
+PATCH  {{ORDER_ITEMS_URL}}/shkshkh
+Content-Type: application/json
+
+{
+    "quantity": 3
+}
+
+### DELETE Order Item ###
+DELETE {{ORDER_ITEMS_URL}}/klhshdsb

@@ -7,40 +7,48 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Req,
+  Res,
+  HttpStatus,
 } from '@nestjs/common';
 import { OrderItemsService } from './order-items.service';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
-import { UpdateOrderItemDto } from './dto/update-order-item.dto';
+import { Request, Response } from 'express';
+import { OrderItem } from './entities/order-item.entity';
+import { RequireAuth, RequiredRoles } from 'src/common';
+import { UserRoles } from '../roles/entities/user.roles';
 
 @Controller('order-items')
+@RequireAuth()
 export class OrderItemsController {
   constructor(private readonly orderItemsService: OrderItemsService) {}
 
   @Post()
-  create(@Body() createOrderItemDto: CreateOrderItemDto) {
-    return this.orderItemsService.create(createOrderItemDto);
+  async create(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() createOrderItemDto: CreateOrderItemDto,
+  ) {
+    const orderItem: OrderItem = await this.orderItemsService.create(
+      createOrderItemDto,
+    );
+    res.setHeader('Location', `${req.path}/${orderItem.id}`);
+    return res.status(HttpStatus.CREATED).json(orderItem);
   }
 
   @Get()
-  findAll() {
+  @RequiredRoles(UserRoles.MANAGER, UserRoles.ADMIN)
+  async findAll(): Promise<OrderItem[]> {
     return this.orderItemsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<OrderItem> {
     return this.orderItemsService.findOne(id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateOrderItemDto: UpdateOrderItemDto,
-  ) {
-    return this.orderItemsService.update(id, updateOrderItemDto);
-  }
-
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
+  async remove(@Param('id', ParseUUIDPipe) id: string): Promise<OrderItem> {
     return this.orderItemsService.remove(id);
   }
 }
