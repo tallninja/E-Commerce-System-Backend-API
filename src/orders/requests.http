@@ -1,0 +1,21 @@
+@ORDERS_URL=http://localhost:5000/api/v1/orders
+
+### GET All Orders ###
+GET {{ORDERS_URL}}
+
+### CREATE Order ###
+POST {{ORDERS_URL}}
+Content-Type: application/json
+
+{
+    "total": 20.55
+}
+
+### GET Order ###
+GET {{ORDERS_URL}}/adshjhdjs
+
+### PATCH Order ###
+PATCH {{ORDERS_URL}}/dskhkddshj
+
+### DELETE Order ###
+DELETE {{ORDERS_URL}}/sdajhkjsd
