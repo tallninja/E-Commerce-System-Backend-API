@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { DecimalTransformer } from '../../utils';
+import { OrderItem } from 'src/order-items/entities/order-item.entity';
 
 @Entity('order_details')
 export class Order {
@@ -28,6 +29,9 @@ export class Order {
     transformer: new DecimalTransformer(),
   })
   total: number;
+
+  @OneToMany(() => OrderItem, (item) => item.order)
+  orderItems: OrderItem[];
 
   @CreateDateColumn({ name: 'created_at', update: false })
   createdAt: Date;

@@ -1,5 +1,5 @@
+import { OrderItem } from '../../order-items/entities/order-item.entity';
 import { CartItem } from '../../cart-items/entities/cart-item.entity';
-import { Cart } from '../../carts/entities/cart.entity';
 import { Category } from '../../categories/entities/category.entity';
 import {
   Column,
@@ -41,6 +41,9 @@ export class Product {
 
   @OneToMany(() => CartItem, (item) => item.product)
   cartItems: CartItem[];
+
+  @OneToMany(() => OrderItem, (item) => item.order)
+  orderItems: OrderItem[];
 
   @CreateDateColumn({ name: 'created_at', nullable: false, update: false })
   createdAt: Date;
