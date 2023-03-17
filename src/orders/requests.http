@@ -12,10 +12,15 @@ Content-Type: application/json
 }
 
 ### GET Order ###
-GET {{ORDERS_URL}}/adshjhdjs
+GET {{ORDERS_URL}}/7f5bd8e9-1edd-48f0-9641-48144c8f573b
 
 ### PATCH Order ###
-PATCH {{ORDERS_URL}}/dskhkddshj
+PATCH {{ORDERS_URL}}/7f5bd8e9-1edd-48f0-9641-48144c8f573b
+Content-Type: application/json
+
+{
+    "total": 19.55
+}
 
 ### DELETE Order ###
-DELETE {{ORDERS_URL}}/sdajhkjsd
+DELETE {{ORDERS_URL}}/7f5bd8e9-1edd-48f0-9641-48144c8f573b

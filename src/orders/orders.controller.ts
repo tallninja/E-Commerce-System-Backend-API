@@ -14,10 +14,11 @@ import {
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { RequireAuth } from '../common';
+import { RequireAuth, RequiredRoles } from '../common';
 import { Request, Response } from 'express';
 import { Order } from './entities/order.entity';
 import { User } from '../users/entities/user.entity';
+import { UserRoles } from 'src/roles/entities/user.roles';
 
 @Controller('orders')
 @RequireAuth()
@@ -39,6 +40,7 @@ export class OrdersController {
   }
 
   @Get()
+  @RequiredRoles(UserRoles.MANAGER, UserRoles.ADMIN)
   async findAll(): Promise<Order[]> {
     return this.ordersService.findAll();
   }
