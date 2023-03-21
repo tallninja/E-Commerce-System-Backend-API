@@ -1,7 +1,4 @@
 import { IsNumber, IsObject, IsOptional } from 'class-validator';
-import { GetUserDto } from '../../users/dto/get-user.dto';
-import { Type } from 'class-transformer';
-import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateCartDto {
   @IsOptional()
