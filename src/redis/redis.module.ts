@@ -6,7 +6,7 @@ import { REDIS } from './redis.constants';
   providers: [
     {
       provide: REDIS,
-      useValue: createClient(),
+      useValue: createClient({ url: 'redis://redis:6379' }),
     },
   ],
   exports: [REDIS],

@@ -23,18 +23,14 @@ import { RolesModule } from './roles/roles.module';
 import RedisStore from 'connect-redis';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common';
-import { RolesService } from './roles/roles.service';
-import { UsersService } from './users/users.service';
-import { UserRoles } from './roles/entities/user.roles';
-import { Role } from './roles/entities/role.entity';
-import { User } from './users/entities/user.entity';
-import { CreateUserDto } from './users/dto/create-user.dto';
 import { OrdersModule } from './orders/orders.module';
 import { OrderItemsModule } from './order-items/order-items.module';
+import { WishlistsModule } from './wishlists/wishlists.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
+      host: 'db',
       type: 'postgres',
       database: 'ecommdb',
       username: 'admin',
@@ -52,16 +48,13 @@ import { OrderItemsModule } from './order-items/order-items.module';
     AuthModule,
     OrdersModule,
     OrderItemsModule,
+    WishlistsModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: RolesGuard }, AppService, Logger],
 })
 export class AppModule implements NestModule {
-  constructor(
-    @Inject(REDIS) private readonly redisClient: any,
-    private readonly rolesService: RolesService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(@Inject(REDIS) private readonly redisClient: any) {}
 
   configure(consumer: MiddlewareConsumer) {
     consumer
